@@ -10,24 +10,9 @@ float InvoiceItem::getTotalPrice()
 string InvoiceItem::hasErrors()
 {
 	if (quantity <= 0 || price <= 0)
-		return "0Неисправан облик рачуна";
+		return "0Kvantitet ili cijena su negativne vrijednosti";
 	else if (getTotalPrice() != totalPrice)
-		return "0Квантитет и цијена се не поклапају са укупном цијеном написаном на рачуну";
+		return "0Kvantitet i cijena se ne poklapaju sa ukupnom cijenom napisanom na racunu";
 	else
-		return "1Правилан облик рачуна, рачун је могуће учитати";
-}
-
-string InvoiceItem::getArticle()
-{
-	return article;
-}
-
-float InvoiceItem::getPrice()
-{
-	return price;
-}
-
-float InvoiceItem::getQuantity()
-{
-	return quantity;
+		return "1Pravilan oblik racuna, unos je moguc";
 }
