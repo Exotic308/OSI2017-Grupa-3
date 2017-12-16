@@ -1,4 +1,9 @@
 #include "Menu.h"
+#include <string>
+#include <iostream>
+#include <filesystem>
+
+namespace fs = std::experimental::filesystem;
 
 void Menu::requestPassword(std::string &password)
 {
