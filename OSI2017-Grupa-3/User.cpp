@@ -17,6 +17,18 @@ std::string User::hasErrors()
 	return "1";
 }
 
+void User::encryptPin(Encryption& crypto)
+{
+	crypto.encrypt(pin);
+	encryptedPin = crypto.encryptedMessage;
+	decryptionKey = crypto.getKey();
+}
+
+std::string User::decryptKey(Encryption& crypto)
+{
+	return crypto.decrypt(decryptionKey);
+}
+
 void to_json(nlohmann::json& j, const User& u)
 {
 	j = { {"name",u.name},{"surname",u.surname},{"admin",u.admin} };
