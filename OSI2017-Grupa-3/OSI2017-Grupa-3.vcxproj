@@ -113,6 +113,7 @@
   <ItemGroup>
     <ClCompile Include="Encryption.cpp" />
     <ClCompile Include="Invoice.cpp" />
+    <ClCompile Include="InvoiceFilter.cpp" />
     <ClCompile Include="InvoiceItem.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -122,6 +123,7 @@
   <ItemGroup>
     <ClInclude Include="Encryption.h" />
     <ClInclude Include="Invoice.h" />
+    <ClInclude Include="InvoiceFilter.h" />
     <ClInclude Include="InvoiceItem.h" />
     <ClInclude Include="JSONParser.hpp" />
     <ClInclude Include="Menu.h" />
