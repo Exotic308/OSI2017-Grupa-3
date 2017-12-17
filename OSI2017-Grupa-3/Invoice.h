@@ -3,15 +3,15 @@
 
 class Invoice
 {
-private:
-	int num_of_invoices;
-	InvoiceItem* invoices;
-	string buyer, invoiceDate;
 public:
+	int numItems;
+	string buyer, date;
+	InvoiceItem* items;
+
 	Invoice(int, string, string);
 	float getPrice();
-	int getPDV();
-	int getPriceAndPDV();
+	float getPDV();
+	float getPriceAndPDV();
 	bool properDateFormat();
 	string getErrors();
 };

@@ -8,7 +8,7 @@ public:
 	string article;
 	float price, quantity, totalPrice;
 
-	InvoiceItem(string = 0, float = 0, float = 0, float = 0);//artikal, cijena, kvantitet i ukupna cijena za provjeru
+	InvoiceItem(string= "", float = 0, float = 0, float = 0);
 	float getTotalPrice();
 	string hasErrors();
 };
