@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClInclude Include="Invoice.h" />
     <ClInclude Include="InvoiceItem.h" />
+    <ClInclude Include="JSONParser.hpp" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="User.h" />

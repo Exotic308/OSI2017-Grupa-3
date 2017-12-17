@@ -50,5 +50,8 @@
     <ClInclude Include="User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JSONParser.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

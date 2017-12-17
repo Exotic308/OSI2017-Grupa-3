@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "JSONParser.hpp"
 
 class User
 {
@@ -14,5 +15,7 @@ public:
 	inline bool isAdmin() { return admin; }
 
 	std::string hasErrors();
+private:
+	friend void to_json(nlohmann::json&, const User&);
+	friend void from_json(const nlohmann::json&, User&);
 };
-
