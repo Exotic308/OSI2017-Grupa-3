@@ -112,6 +112,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Encryption.cpp" />
+    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Invoice.cpp" />
     <ClCompile Include="InvoiceFilter.cpp" />
     <ClCompile Include="InvoiceItem.cpp" />
@@ -122,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Encryption.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="Invoice.h" />
     <ClInclude Include="InvoiceFilter.h" />
     <ClInclude Include="InvoiceItem.h" />
