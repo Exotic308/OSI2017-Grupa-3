@@ -16,3 +16,27 @@ std::string User::hasErrors()
 				return "0Pin sadrzi karaktere koji nisu cifre.";
 	return "1";
 }
+
+void User::encryptPin(Encryption& crypto)
+{
+	crypto.encrypt(pin);
+	encryptedPin = crypto.encryptedMessage;
+	decryptionKey = crypto.getKey();
+}
+
+std::string User::decryptKey(Encryption& crypto)
+{
+	return crypto.decrypt(decryptionKey);
+}
+
+void to_json(nlohmann::json& j, const User& u)
+{
+	j = { {"name",u.name},{"surname",u.surname},{"admin",u.admin} };
+}
+
+void from_json(const nlohmann::json& j, User& u)
+{
+	u.name = j.at("name").get<std::string>();
+	u.surname = j.at("surname").get<std::string>();
+	u.admin = j.at("admin").get<bool>();
+}
