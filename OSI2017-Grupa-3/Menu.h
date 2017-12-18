@@ -1,11 +1,13 @@
 #pragma once
-#include<iostream>
-#include<string>
+#include"User.h"
+#include"Users.h"
+#include"Message.h"
+#include"Invoice.h"
+#include"InvoiceFilter.h"
 class Menu
 {
 public:
-	static void requestPassword(std::string &);
-
+	static bool requestLogin(User &);
+	static void adminOptions();
+	static void analystOptions(Invoice*);
 };
-
-
