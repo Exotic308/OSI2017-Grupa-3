@@ -7,7 +7,7 @@
 class Menu
 {
 public:
-	static bool requestLogin(User &);
+	static bool requestLogin(Users &, User &);
 	static void adminOptions();
 	static void analystOptions(Invoice*);
 };

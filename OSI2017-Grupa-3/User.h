@@ -11,11 +11,13 @@ class User
 public:
 	std::string name;
 	std::string surname;
+	std::string username;
 	std::string encryptedPin = "";
 
-	User(std::string, std::string, std::string, bool);
+	User(std::string = "", std::string = "", std::string = "", std::string = "", bool = false);
 	
 	inline bool isAdmin() { return admin; }
+	inline std::string getPin() { return pin; }
 
 	std::string hasErrors();
 	void encryptPin(Encryption&);

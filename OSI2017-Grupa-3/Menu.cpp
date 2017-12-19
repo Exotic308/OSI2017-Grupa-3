@@ -1,6 +1,6 @@
 #include "Menu.h"
 
-bool Menu::requestLogin(User &user)
+bool Menu::requestLogin(Users& users, User &user)
 {
 	std::string pin, name, result;
 	std::cout << "Unesite korisnicko ime:";
@@ -8,7 +8,7 @@ bool Menu::requestLogin(User &user)
 	std::cout << std::endl << "Unesite sifru:";
 	std::cin >> pin;
 
-	result = loginUser(name, pin,user);
+	result = users.loginUser(name, pin, user);
 
 	if (Message::isSuccess(result))
 	{

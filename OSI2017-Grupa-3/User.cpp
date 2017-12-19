@@ -3,7 +3,7 @@
 
 
 
-User::User(std::string name, std::string surname, std::string pin, bool admin) : name(name), surname(surname), pin(pin), admin(admin)
+User::User(std::string name, std::string surname, std::string username, std::string pin, bool admin) : name(name), surname(surname), username(username), pin(pin), admin(admin)
 {}
 
 std::string User::hasErrors()
@@ -31,12 +31,13 @@ std::string User::decryptKey(Encryption& crypto)
 
 void to_json(nlohmann::json& j, const User& u)
 {
-	j = { {"name",u.name},{"surname",u.surname},{"admin",u.admin} };
+	j = { {"name",u.name}, {"surname",u.surname}, {"username",u.username}, {"admin",u.admin} };
 }
 
 void from_json(const nlohmann::json& j, User& u)
 {
 	u.name = j.at("name").get<std::string>();
 	u.surname = j.at("surname").get<std::string>();
+	u.username = j.at("username").get<std::string>();
 	u.admin = j.at("admin").get<bool>();
 }
