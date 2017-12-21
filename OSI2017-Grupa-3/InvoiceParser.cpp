@@ -5,6 +5,7 @@ using std::stringstream;
 
 string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 {
+	int format = detectFormat(invoiceText);
 	switch (detectFormat(invoiceText))
 	{
 	case 1: return parseFormat1(invoice, invoiceText);
@@ -12,20 +13,22 @@ string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 	case 3: return parseFormat3(invoice, invoiceText);
 	case 4: return parseFormat4(invoice, invoiceText);
 	case 5: return parseFormat5(invoice, invoiceText);
-	default: return string(); /*Ne znam sta treba da vrati ali skontacemo.*/
+	default: return "0Format racuna nije validan.";
 	};
 }
 
 int InvoiceParser::detectFormat(string invoiceText)
 {
+	const int invalidFormat = 0;
 	if (invoiceText[0] == 'K')/*Format 1 ili 4.*/
 	{
 		int newPosition = moveRows(3, 0, invoiceText);/*Pomjeramo se u red sa naslovom racuna.*/
-		while (invoiceText[newPosition++] == ' ');
+		while (invoiceText[++newPosition] == ' ');
 		if (invoiceText[newPosition] == 'R')/*Detektovan racun format 1.*/
 			return 1;
-		else
+		else if (invoiceText[newPosition] == 'O')
 			return 4;/*Detektovan racun format 4.*/
+		else return invalidFormat;
 	}
 	else if (invoiceText[0] == 'O')/*Format 2 ili 3.*/
 	{
@@ -49,11 +52,11 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 
 	string line = getLineOfText(position, invoiceText);
 	std::stringstream stringStream(line);
-	stringStream >> stringValue >> c >> invoice.buyer;/*Unosi ime kupca.*/
+	stringStream >> stringValue >> invoice.buyer;/*Unosi ime kupca.*/
 
 	line = getLineOfText(position, invoiceText);/*Unosi datum.*/
 	stringstream stringStream1(line);
-	stringStream1 >> stringValue >> c >> invoice.date;
+	stringStream1 >> stringValue >> invoice.date;
 
 	line=getLineOfText(position, invoiceText);
 	line=getLineOfText(position, invoiceText);
@@ -66,6 +69,7 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 		line = getLineOfText(position, invoiceText);
 		countItems++;
 	}
+	--countItems;
 	position = savePosition;
 	invoice.items = new InvoiceItem[countItems];/*Cuvamo tu poziciju i brojimo koliko ima artikala.*/
 
@@ -89,12 +93,23 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 	line = getLineOfText(position, invoiceText);/*Uzimamo red pdv-a i ucitavamo ga.*/
 	stringstream stringStream4(line);
 	stringStream4 >> stringValue >> c >> PDV;
-
+	
 	line = getLineOfText(position, invoiceText);
 	stringstream stringStream5(line);
-	stringStream5 >> stringValue >> c >>priceToPay; /*Uzimamo red ukupne cijene i ucitavamo je.*/
+	stringStream5 >> stringValue>>stringValue>>stringValue>>priceToPay; /*Uzimamo red ukupne cijene i ucitavamo je.*/
 
-	return string();/*Ne znamo sta treba da vrati ali saznacemo.*/
+	return "1";/*Ne znamo sta treba da vrati ali saznacemo.*/
+}
+void InvoiceParser::RemoveChar(string& str, char c)
+{
+	string result;
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		char currentChar = str[i];
+		if (currentChar != c)
+			result += currentChar;
+	}
+	str = result;
 }
 
 string InvoiceParser::parseFormat2(Invoice &invoice, string invoiceText)
@@ -134,3 +149,17 @@ string InvoiceParser::getLineOfText(int& position, string inputText)
 	position++;
 	return result;
 }
+
+const string InvoiceParser::racun1 =
+"Kupac: ABC\n"
+"Datum: 24/10/2017\n"
+"\n"
+"	       Racun\n"
+"\n"
+"Proizvod - kolicina - cijena - ukupno\n"
+"abc 123  -    10    -    5   -   50\n"
+"abb 456  -    20    -   10   -   200\n"
+"---------------------------------------\n"
+"Ukupno: 250\n"
+"PDV: 42.5\n"
+"Ukupno za placanje: 292.5 \n";

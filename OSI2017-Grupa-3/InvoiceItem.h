@@ -11,4 +11,5 @@ public:
 	InvoiceItem(string= "", float = 0, float = 0, float = 0);
 	float getTotalPrice();
 	string hasErrors();
+	void print();
 };

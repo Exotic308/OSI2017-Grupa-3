@@ -5,6 +5,8 @@
 Invoice::Invoice(int num, string buyer, string date) :numItems(num), buyer(buyer), date(date), items(new InvoiceItem[numItems])
 {};
 
+Invoice::Invoice(){ }
+
 float Invoice::getPrice()
 {
 	float sum = 0;
@@ -64,4 +66,21 @@ string Invoice::getErrors()
 		if (Message::isSuccess(items[i].hasErrors()))
 			return "0Netacan oblik proizvoda na racunu.";
 	return "1Ispravan racun.";
+}
+
+using std::cout;
+using std::endl;
+void Invoice::print() {
+	cout << "Kupac: "<< buyer << endl;
+	cout << "Datum: " << date << endl<<endl;
+	cout << "Itemi" << endl;
+	for (int i = 0; i < numItems; ++i) {
+		cout << i << ". ";
+		items[i].print();
+	}
+	cout << endl;
+	cout << "Izracunata cijena: " << getPrice()<< endl;
+	cout << "Izracunat PDV: " << getPDV() << endl;
+	cout << "Izracunata cijena+PDV: " << getPriceAndPDV()<<endl;
+	cout << "Erori: " << getErrors() << endl;
 }
