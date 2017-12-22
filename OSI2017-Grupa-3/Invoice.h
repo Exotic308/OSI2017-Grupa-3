@@ -5,15 +5,14 @@ class Invoice
 {
 public:
 	int numItems;
+	float totalPrice, PDV;
 	string buyer, date;
 	InvoiceItem* items;
-	Invoice();
-	Invoice(int, string, string);
+
+	Invoice(int = 0, float = 0.0, float = 0.0, string = "", string = "");
 	float getPrice();
-	float getPDV();
-	float getPriceAndPDV();
-	bool properDateFormat();
 	string getErrors();
 	void print();
+	static bool properDateFormat(string);
 };
 

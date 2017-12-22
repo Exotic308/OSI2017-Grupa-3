@@ -1,6 +1,7 @@
 ﻿#include "InvoiceItem.h"
 #include <iostream>
-InvoiceItem::InvoiceItem(string article, float price, float quantity, float totalPrice) :article(article), price(price), quantity(quantity), totalPrice(totalPrice) {}
+InvoiceItem::InvoiceItem(string article, float price, float quantity, float totalPrice):
+	article(article), price(price), quantity(quantity), totalPrice(totalPrice) {};
 
 float InvoiceItem::getTotalPrice()
 {
@@ -16,11 +17,14 @@ string InvoiceItem::hasErrors()
 	else
 		return "1Pravilan oblik racuna, unos je moguc";
 }
+
+using std::cout;
+using std::endl;
 void InvoiceItem::print() {
-	std::cout << "Artikal: " << article << std::endl;
-	std::cout << "Cijena: " << price << std::endl;
-	std::cout << "Kolicina: " << quantity << std::endl;
-	std::cout << "Ukupna cijena: " << totalPrice << std::endl;
-	std::cout << "Izracunata cijena: " << getTotalPrice() << std::endl;
-	std::cout << "Erori: " << hasErrors() << std::endl;
+	cout << "Artikal: " << article << endl;
+	cout << "Cijena: " << price << endl;
+	cout << "Kolicina: " << quantity << endl;
+	cout << "Ukupna cijena: " << totalPrice << endl;
+	cout << "Izracunata cijena: " << getTotalPrice() << endl;
+	cout << "Erori: " << hasErrors() << endl;
 }

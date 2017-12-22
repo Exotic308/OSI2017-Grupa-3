@@ -1,11 +1,12 @@
 #include "Invoice.h"
 #include "Message.h"
 #define ATOI 0x30
+using std::cout;
+using std::endl;
 
-Invoice::Invoice(int num, string buyer, string date) :numItems(num), buyer(buyer), date(date), items(new InvoiceItem[numItems])
-{};
-
-Invoice::Invoice(){ }
+Invoice::Invoice(int numItems, float totalPrice,float PDV, string buyer, string date) :
+	numItems(numItems), totalPrice(totalPrice), PDV(PDV), buyer(buyer), date(date), items(new InvoiceItem[numItems])
+		{};
 
 float Invoice::getPrice()
 {
@@ -14,24 +15,48 @@ float Invoice::getPrice()
 	return sum;
 }
 
-float Invoice::getPDV()
+string Invoice::getErrors()
 {
-	return getPrice()*0.17f;
+	if (numItems < 0)
+		return "0Broj proizvoda na racunu ne moze biti negativan.";
+	if (!properDateFormat(date))
+		return "0Neispravan format datuma.";
+
+	for (int i = 0; i < numItems; i++)
+		if (!Message::isSuccess(items[i].hasErrors()))
+			return Message::getMessage(items[i].hasErrors());
+
+	if (getPrice() != totalPrice)
+		return "0Neuskladjena totalna cijena posebnih proizvoda sa totalnom cijenom na racunu.";
+	if (PDV < 0)
+		return "0PDV ne moze imati negativnu vrijednost.";
+
+	return "1Ispravan racun.";
 }
 
-float Invoice::getPriceAndPDV()
-{
-	return getPrice() + getPDV();
+void Invoice::print() {
+	cout << "Kupac: "<< buyer << endl;
+	cout << "Datum: " << date << endl<<endl;
+	cout << "Itemi" << endl;
+	for (int i = 0; i < numItems; ++i) {
+		cout << i << ". ";
+		items[i].print();
+	}
+	cout << endl;
+	cout << "Izracunata cijena: " << totalPrice<< endl;
+	cout << "Izracunat PDV:" << PDV << endl;
+	cout << "Izracunata cijena+PDV: " << totalPrice + PDV << endl;
+	cout << "Erori: " << Message::getMessage(getErrors()) << endl;
 }
 
-bool Invoice::properDateFormat()
+bool Invoice::properDateFormat(string date)
 {
 	if (date.length() != 10)
 		return false;
 	int day = (date[0] - ATOI) * 10 + date[1] - ATOI;
 	int month = (date[3] - ATOI) * 10 + date[4] - ATOI;
-	int year = ((date[6]- ATOI )* 1000) + ((date[7]- ATOI) * 100) + ((date[8]- ATOI) * 10) + date[9] - ATOI;
-	
+	int year = ((date[6] - ATOI) * 1000) + ((date[7] - ATOI) * 100) + ((date[8] - ATOI) * 10) + date[9] - ATOI;
+
 	switch (month)
 	{
 	case 1: case 3: case 5: case 7: case 8: case 10: case 12:
@@ -52,35 +77,4 @@ bool Invoice::properDateFormat()
 	default:
 		return true;
 	}
-
-}
-
-string Invoice::getErrors()
-{
-	Message a;
-	if (!properDateFormat())
-		return "0Neispravan format datuma.";
-	if (numItems < 0)
-		return "0Broj proizvoda na racunu ne moze biti negativan.";
-	for (int i = 0; i < numItems; i++)
-		if (Message::isSuccess(items[i].hasErrors()))
-			return "0Netacan oblik proizvoda na racunu.";
-	return "1Ispravan racun.";
-}
-
-using std::cout;
-using std::endl;
-void Invoice::print() {
-	cout << "Kupac: "<< buyer << endl;
-	cout << "Datum: " << date << endl<<endl;
-	cout << "Itemi" << endl;
-	for (int i = 0; i < numItems; ++i) {
-		cout << i << ". ";
-		items[i].print();
-	}
-	cout << endl;
-	cout << "Izracunata cijena: " << getPrice()<< endl;
-	cout << "Izracunat PDV: " << getPDV() << endl;
-	cout << "Izracunata cijena+PDV: " << getPriceAndPDV()<<endl;
-	cout << "Erori: " << getErrors() << endl;
 }
