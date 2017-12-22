@@ -1,13 +1,22 @@
 #include "InvoiceParser.h"
 #include <sstream>
+#include "Message.h"
 
 using std::stringstream;
 
 string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 {
-	int format = detectFormat(invoiceText);
-	switch (detectFormat(invoiceText))
+	int format = -1;
+	string succes = detectFormat(invoiceText);
+	try {
+		format = std::stoi(succes);
+	}
+	catch (const std::exception& e) {
+		
+	}
+	switch (format)
 	{
+	case -1: return "0"+succes;
 	case 1: return parseFormat1(invoice, invoiceText);
 	case 2: return parseFormat2(invoice, invoiceText);
 	case 3: return parseFormat3(invoice, invoiceText);
@@ -17,31 +26,32 @@ string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 	};
 }
 
-int InvoiceParser::detectFormat(string invoiceText)
+string InvoiceParser::detectFormat(string invoiceText)
 {
 	const int invalidFormat = 0;
+	//getChars(invoiceText, 5) == "Kupac"
 	if (invoiceText[0] == 'K')/*Format 1 ili 4.*/
 	{
 		int newPosition = moveRows(3, 0, invoiceText);/*Pomjeramo se u red sa naslovom racuna.*/
 		while (invoiceText[++newPosition] == ' ');
 		if (invoiceText[newPosition] == 'R')/*Detektovan racun format 1.*/
-			return 1;
+			return "1";
 		else if (invoiceText[newPosition] == 'O')
-			return 4;/*Detektovan racun format 4.*/
-		else return invalidFormat;
+			return "4";/*Detektovan racun format 4.*/
+		else return "Naziv prodavnice nije u redu";
 	}
 	else if (invoiceText[0] == 'O')/*Format 2 ili 3.*/
 	{
 		int newPosition = moveRows(2, 0, invoiceText);
 		if (invoiceText[newPosition] == '\n')
-			return 2;/*Detektovan format 2.*/
+			return "2";/*Detektovan format 2.*/
 		else
-			return 3;/*Detektovan format 3.*/
+			return "3";/*Detektovan format 3.*/
 	}
 	else if (invoiceText[0] == 'S')
-		return 5;/*Detektovan format 5.*/
+		return "5";/*Detektovan format 5.*/
 	else
-		return 0;/*Pogresan format.*/
+		return "Pogresan format";/*Pogresan format.*/
 }
 
 string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
@@ -70,6 +80,8 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 		countItems++;
 	}
 	--countItems;
+	if (countItems <= 0)
+		return "0Nema artikala na racunu.";
 	position = savePosition;
 	invoice.items = new InvoiceItem[countItems];/*Cuvamo tu poziciju i brojimo koliko ima artikala.*/
 
@@ -79,26 +91,28 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 		line = getLineOfText(position, invoiceText);
 		stringstream stringStream2(line);
 		stringStream2 >> value1 >> value2 >> c >> invoice.items[j].quantity >> c >> invoice.items[j].price >> c >> invoice.items[j].totalPrice;
-		invoice.items[j].article = value1 + value2;
-	}/*Unosimo artikal po artikal.Sabiramo dva stringa jer smo glupi da to odradimo odvojeno.*/
+		invoice.items[j].article = value1 +" "+ value2;
+	}/*Unosimo artikal po artikal.Sabiramo dva stringa*/
 
 	invoice.numItems = countItems;
-	double PDV, price, priceToPay;
 
 	line = getLineOfText(position, invoiceText);
 	line = getLineOfText(position, invoiceText);/*Sklanjamo red crtica i uzimamo red cijene i ucitavamo je.*/
 	stringstream stringStream3(line);
-	stringStream3 >> stringValue >> c >> price;
+	stringStream3 >> stringValue >> invoice.price;
 
 	line = getLineOfText(position, invoiceText);/*Uzimamo red pdv-a i ucitavamo ga.*/
 	stringstream stringStream4(line);
-	stringStream4 >> stringValue >> c >> PDV;
+	stringStream4 >> stringValue >>invoice.PDV;
 	
 	line = getLineOfText(position, invoiceText);
 	stringstream stringStream5(line);
-	stringStream5 >> stringValue>>stringValue>>stringValue>>priceToPay; /*Uzimamo red ukupne cijene i ucitavamo je.*/
+	stringStream5 >> stringValue>>stringValue>>stringValue>>invoice.totalPrice; /*Uzimamo red ukupne cijene i ucitavamo je.*/
 
-	return "1";/*Ne znamo sta treba da vrati ali saznacemo.*/
+	string errors = invoice.getErrors();
+	if (!Message::isSuccess(errors))
+		return errors;
+	return "1";
 }
 void InvoiceParser::RemoveChar(string& str, char c)
 {

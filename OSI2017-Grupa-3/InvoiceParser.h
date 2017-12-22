@@ -8,7 +8,7 @@ public:
 	string parseFromText(Invoice &, string);
 	static const string racun1;
 private:
-	int detectFormat(string);
+	string detectFormat(string);
 
 	string parseFormat1(Invoice&, string);
 	string parseFormat2(Invoice&, string);

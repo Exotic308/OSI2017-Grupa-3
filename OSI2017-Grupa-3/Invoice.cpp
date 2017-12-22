@@ -4,8 +4,8 @@
 using std::cout;
 using std::endl;
 
-Invoice::Invoice(int numItems, float totalPrice,float PDV, string buyer, string date) :
-	numItems(numItems), totalPrice(totalPrice), PDV(PDV), buyer(buyer), date(date), items(new InvoiceItem[numItems])
+Invoice::Invoice(int numItems, float price, float PDV,float totalPrice, string buyer, string date):
+	numItems(numItems), price(price), PDV(PDV),totalPrice(totalPrice), buyer(buyer), date(date), items(new InvoiceItem[numItems])
 		{};
 
 float Invoice::getPrice()
@@ -25,12 +25,13 @@ string Invoice::getErrors()
 	for (int i = 0; i < numItems; i++)
 		if (!Message::isSuccess(items[i].hasErrors()))
 			return Message::getMessage(items[i].hasErrors());
-
-	if (getPrice() != totalPrice)
-		return "0Neuskladjena totalna cijena posebnih proizvoda sa totalnom cijenom na racunu.";
+	float p = getPrice();
+	if (PDV != price*0.17)
+		return "0PDV nije pravilno izracunat";
 	if (PDV < 0)
 		return "0PDV ne moze imati negativnu vrijednost.";
-
+	if (getPrice() != price || totalPrice != price + PDV)
+		return "0Neuskladjena totalna cijena posebnih proizvoda sa totalnom cijenom na racunu.";
 	return "1Ispravan racun.";
 }
 

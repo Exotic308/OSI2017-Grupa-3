@@ -3,14 +3,16 @@
 
 class Invoice
 {
+private:
+	float getPrice();
 public:
 	int numItems;
-	float totalPrice, PDV;
+	float price, totalPrice, PDV;
 	string buyer, date;
 	InvoiceItem* items;
 
-	Invoice(int = 0, float = 0.0, float = 0.0, string = "", string = "");
-	float getPrice();
+	Invoice(int = 0, float = 0.0, float = 0.0, float = 0.0, string = "", string = "");
+	
 	string getErrors();
 	void print();
 	static bool properDateFormat(string);
