@@ -29,15 +29,24 @@ std::string User::decryptKey(Encryption& crypto)
 	return crypto.decrypt(decryptionKey);
 }
 
-void to_json(nlohmann::json& j, const User& u)
+std::string User::getEncryptedJSON()
 {
-	j = { {"name",u.name}, {"surname",u.surname}, {"username",u.username}, {"admin",u.admin} };
+	json j = {
+		{"name",name},
+		{"surname",surname},
+		{"username",username},
+		{"admin",admin},
+		{"pin", pin }
+	};
+	return Encryption::xorEncryptDecrypt(j.dump());
+}
+void User::loadFromEncryptedJSON(std::string s) {
+	s = Encryption::xorEncryptDecrypt(s);
+	json j = s;
+	name = j.at("name").get<std::string>();
+	surname = j.at("surname").get<std::string>();
+	username = j.at("username").get<std::string>();
+	pin = j.at("pin").get<std::string>();
+	admin = j.at("admin").get<bool>();
 }
 
-void from_json(const nlohmann::json& j, User& u)
-{
-	u.name = j.at("name").get<std::string>();
-	u.surname = j.at("surname").get<std::string>();
-	u.username = j.at("username").get<std::string>();
-	u.admin = j.at("admin").get<bool>();
-}

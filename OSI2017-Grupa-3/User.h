@@ -2,7 +2,7 @@
 #include <iostream>
 #include "JSONParser.hpp"
 #include "Encryption.h"
-
+using nlohmann::json;
 class User
 {
 	bool admin;
@@ -22,7 +22,7 @@ public:
 	std::string hasErrors();
 	void encryptPin(Encryption&);
 	std::string decryptKey(Encryption&);
-private:
-	friend void to_json(nlohmann::json&, const User&);
-	friend void from_json(const nlohmann::json&, User&);
+
+	std::string getEncryptedJSON();
+	void loadFromEncryptedJSON(std::string s);
 };

@@ -1,9 +1,13 @@
 #include "Users.h"
-
+#include <algorithm>
+#include <vector>
 
 
 Users::Users() : count(0), capacity(10)
 {
+	//poziv na Milosevu funkciju
+	//poziv na loadFromJSON
+	/*Markov kod
 	users = new User[capacity];
 	std::ifstream file;
 	std::string temp = "";
@@ -13,7 +17,7 @@ Users::Users() : count(0), capacity(10)
 		std::getline(file, temp);
 		nlohmann::json j = nlohmann::json::parse(temp);
 		users[count++] = j;
-	}
+	}*/
 }
 
 Users::~Users()
@@ -32,9 +36,6 @@ std::string Users::addUser(std::string name, std::string surname, std::string pi
 		do {
 			std::cin >> userType;
 		} while (userType != 0 && userType != 1);
-		std::string username = "";
-		std::cout << "Unesite korisnicko ime: ";
-		getline(std::cin, username);
 		User temp(name, surname, username, pin, userType);
 		capacityCheck();
 		users[count++] = temp;
@@ -59,13 +60,13 @@ std::string Users::loginUser(std::string username, std::string pin, User& user)
 
 void Users::saveUsers()
 {
-	nlohmann::json j;
+/*	nlohmann::json j;
 	std::ofstream output;
 	output.open("Users.txt");
 	for (int i = 0; i < count; i++) {
 		j = users[i];
 		output << j << std::endl;
-	}
+	}*/
 }
 
 void Users::capacityCheck()
@@ -92,4 +93,22 @@ bool Users::userAlreadyExists(std::string username)
 		if (users[i].username == username)
 			return true;
 	return false;
+}
+
+json Users::getJSON() {
+	json j = json{ 
+		{ "count", count },
+		{ "capacity", capacity },
+	};
+	std::vector<std::string> v;
+	for (int i = 0; i < count; ++i)
+		v.push_back(users[i].getEncryptedJSON());
+	j["users"] = v;
+	return j;
+}
+
+void Users::loadFromJSON(json j) {
+	count = j.at("count").get<int>();
+	capacity= j.at("capacity").get<int>();
+	std::vector<std::string> v = j.at("users").get<std::vector<std::string>>();
 }
