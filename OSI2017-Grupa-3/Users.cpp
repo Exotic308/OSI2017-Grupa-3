@@ -58,6 +58,18 @@ std::string Users::loginUser(std::string username, std::string pin, User& user)
 	return "1";
 }
 
+std::string Users::deleteUser(std::string username)
+{
+	for (int i = 0; i < count; i++)
+		if (users[i].username == username) {
+			for (int j = i; j < count; j++)
+				users[j] = users[j + 1];
+			--count;
+			return "1";
+		}
+	return "0Korisnik nije pronadjen.";
+}
+
 void Users::saveUsers()
 {
 /*	nlohmann::json j;
