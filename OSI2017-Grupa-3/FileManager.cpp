@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <fstream>
 #include <windows.h>
+#include <direct.h>
 namespace fs = std::experimental::filesystem;
 
 std::string FileManager::getexepath()
@@ -15,7 +16,6 @@ std::string FileManager::getexepath()
 
 std::vector<std::string> FileManager::GetPathsWithExtension(std::string ext, std::string relativePath)
 {
-
 	std::string path = getexepath();
 	if (relativePath != "") path += relativePath + "\\";
 	int counter = 0;
@@ -34,4 +34,24 @@ std::vector<std::string> FileManager::GetPathsWithExtension(std::string ext, std
 		if (tempExt == ext) paths[counter++] = s;
 	}
 	return paths;
+}
+
+bool FileManager::saveToFolder(std::string directory, std::string filename, std::string text)
+{
+	_mkdir(directory.c_str());
+	return saveToFile(directory + "\\" + filename, text);
+}
+
+bool FileManager::saveToFile(std::string path, std::string text)
+{
+	std::ofstream fp;
+	fp.open(path.c_str(), std::ios_base::in);
+	if (fp.is_open())
+	{
+		fp.seekp(std::ios_base::end);
+		fp << text << std::endl;
+		return true;
+	}
+	std::cout << "Neuspjesno otvaranje" << std::endl;
+	return false;
 }
