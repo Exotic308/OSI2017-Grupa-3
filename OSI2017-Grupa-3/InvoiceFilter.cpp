@@ -1,4 +1,4 @@
-/*#include "InvoiceFilter.h"
+#include "InvoiceFilter.h"
 
 std::vector<Invoice> InvoiceFilter::filterInvoice(Invoice* invoice_array, std::function<bool(Invoice, string)> f, int num_of_elements, string filter)
 {
@@ -14,12 +14,10 @@ return filterInvoice(invoice_array, [&invoice_array](Invoice x, string filter) {
 
 std::vector<Invoice> InvoiceFilter::filter_by_date(Invoice* invoice_array, int num_of_elements, string date)
 {
-return filterInvoice(invoice_array, [&invoice_array](Invoice x, string filter) {if (!filter.compare(x.invoiceDate)) return true; return false; }, num_of_elements, date);
+return filterInvoice(invoice_array, [&invoice_array](Invoice x, string filter) {if (!filter.compare(x.date)) return true; return false; }, num_of_elements, date);
 }
 
 std::vector<Invoice> InvoiceFilter::filter_by_name(Invoice* invoice_array, int num_of_elements, string art_name)
 {
-return filterInvoice(invoice_array, [&invoice_array](Invoice x, string filter) {for (int i = 0; i < x.num_of_invoices; i++) if (!filter.compare(x.invoices[i].article) return true; return false; }, num_of_elements, art_name);
+return filterInvoice(invoice_array, [&invoice_array](Invoice x, string filter) {for (int i = 0; i < x.numItems; i++) if (!filter.compare(x.items[i].article)) return true; return false; }, num_of_elements, art_name);
 }
-
-*/
