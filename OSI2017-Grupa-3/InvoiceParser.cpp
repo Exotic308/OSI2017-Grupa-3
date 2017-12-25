@@ -136,7 +136,7 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 		stringStream2 >> value1 >> value2 >> c >> invoice.items[j].quantity >> c >> invoice.items[j].price >> c >> invoice.items[j].totalPrice;
 		invoice.items[j].article = value1 + " " + value2;
 	}/*Unosimo artikal po artikal.Sabiramo dva stringa*/
-
+	
 	invoice.numItems = countItems;
 
 	line = getLineOfText(position, invoiceText);
@@ -228,7 +228,7 @@ string InvoiceParser::parseFormat2(Invoice &invoice, string invoiceText)
 
 	return "1";
 }
-
+/*Komentar.*/
 string InvoiceParser::parseFormat3(Invoice &invoice, string invoiceText)
 {
 	int position = 0;
