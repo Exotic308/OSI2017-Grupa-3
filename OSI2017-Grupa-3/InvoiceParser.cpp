@@ -31,28 +31,72 @@ string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 string InvoiceParser::detectFormat(string invoiceText)
 {
 	const int invalidFormat = 0;
-	//getChars(invoiceText, 5) == "Kupac"
-	if (invoiceText[0] == 'K')/*Format 1 ili 4.*/
+	int position = 0;
+	string stringValue = getLineOfText(position, invoiceText);
+	string temporary, temporary1;
+
+	for (int i = 0; (i < 6)&&(i<(stringValue.length()-1)); i++)
+		temporary.push_back(stringValue[i]);/*Pokusa da pokupi "Kupac:" .*/
+	
+	for (int i = 0; i < 28 && i < stringValue.length(); i++)
+		temporary1.push_back(stringValue[i]);/*Pokusa da pokupi 5. format.*/
+
+	if (temporary.compare("Kupac:") == 0)/*Format 1 ili 4.*/
 	{
-		int newPosition = moveRows(3, 0, invoiceText);/*Pomjeramo se u red sa naslovom racuna.*/
-		while (invoiceText[++newPosition] == ' ');
-		if (invoiceText[newPosition] == 'R')/*Detektovan racun format 1.*/
-			return "1";
+		stringstream stringStream2(getLineOfText(position, invoiceText));
+		stringStream2 >> stringValue;/*Kupimo "Datum:" .*/
+
+		if (stringValue.compare("Datum:") == 0)
+		{
+			if (invoiceText[position++] == '\n')
+			{
+				stringstream stringStream3(getLineOfText(position, invoiceText));
+				stringStream3 >> stringValue;
+
+				if (stringValue.compare("Racun") == 0)
+					return "1";/*Detektovan format 1. */
+				else if (stringValue.compare("OSI Market"))
+					return "4";/*Detektovan format 4.*/
+				else
+					return "Neprepoznatljiv format(greska u trecem redu).";
+			}
+			else
+				return "Neprepoznatljiv format(greska u drugom redu).";
+		}
 		else
-			return "4";/*Detektovan racun format 4.*/
+			return "Neprepoznatljiv format(greska u prvom redu).";
 	}
-	else if (invoiceText[0] == 'O')/*Format 2 ili 3.*/
+	else if (stringValue.compare("OSI Market Banja Luka")==0)/*Format 2 ili 3.*/
 	{
-		int newPosition = moveRows(2, 0, invoiceText);
-		if (invoiceText[newPosition] == '\n')
-			return "2";/*Detektovan format 2.*/
+		stringstream stringStream2(getLineOfText(position, invoiceText));
+		stringStream2 >> stringValue;
+
+		if (stringValue.compare("Poslovnica:")==0)
+		{
+			if (invoiceText[position] == '\n')
+				return "2";
+			else if (invoiceText[position] == 'K')
+			{
+				string temporary;
+				stringValue = getLineOfText(position, invoiceText);
+				for (int i = 0; (i < 6) && (i < (stringValue.length() - 1)); i++)
+					temporary.push_back(stringValue[i]);
+				if (temporary.compare("Kupac:")==0)
+					return "3";
+				else
+					return "Neprepoznatljiv format(greska u trecem redu).";
+			}
+			else
+				return "Neprepoznatljiv format(greska u trecem redu).";
+			
+		}
 		else
-			return "3";/*Detektovan format 3.*/
+			return "Neprepoznatljiv format(greska u drugom redu).";
 	}
-	else if (invoiceText[0] == 'S')
-		return "5";/*Detektovan format 5.*/
+	else if (temporary1.compare("Sifra,Kolicina,Cijena,Ukupno")==0)/*Format 5.*/
+		return "5";
 	else
-		return "Pogresan format";/*Pogresan format.*/
+		return "Neprepoznatiljiv format(greska u prvom redu).";/*Nepodrzan format.*/
 }
 
 string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
@@ -328,7 +372,15 @@ string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText)
 	}
 
 	invoice.buyer = "default";
-	invoice.date = "11/9/2025";
+	invoice.date = "11/9/2000 ";
+
+	invoice.price = invoice.totalPrice = 0;
+
+	for (int i = 0; i < invoice.numItems; i++)
+		invoice.price += invoice.items[i].totalPrice;
+
+	invoice.PDV = invoice.price*0.17;
+	invoice.totalPrice = invoice.PDV+invoice.price;
 
 	string errors = invoice.getErrors();
 	if (!Message::isSuccess(errors))
@@ -350,7 +402,7 @@ int InvoiceParser::moveRows(int rows, int position, string inputText)
 string InvoiceParser::getLineOfText(int& position, string inputText)
 {
 	string result;
-	for (position; inputText[position] != '\n'; position++)
+	for (position; inputText[position] != '\n'&&(position<(inputText.length()-1)); position++)
 		result.push_back(inputText[position]);
 	position++;
 	return result;
@@ -431,7 +483,7 @@ const string InvoiceParser::racun2 =
 "Datum: 24/10/2017\n";
 const string InvoiceParser::racun3 =
 "OSI Market Banja Luka\n"
-"Poslovnica : ETF\n"
+"Poslovnica: ETF\n"
 "Kupac: ABC\n"
 "Datum: 24/10/2017\n"
 "\n"

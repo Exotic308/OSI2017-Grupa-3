@@ -26,7 +26,7 @@ string Invoice::getErrors()
 		if (!Message::isSuccess(items[i].hasErrors()))
 			return Message::getMessage(items[i].hasErrors());
 	float p = getPrice();
-	if (PDV != price*0.17)
+	if (PDV != (float)(price*0.17))
 		return "0PDV nije pravilno izracunat";
 	if (PDV < 0)
 		return "0PDV ne moze imati negativnu vrijednost.";
