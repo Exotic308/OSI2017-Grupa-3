@@ -12,7 +12,7 @@ bool Menu::requestLogin(Users& users, User &user)
 
 	if (Message::isSuccess(result))
 	{
-		std::cout << "Uspjesna prijava korisnika!" << name << std::endl;
+		std::cout << "Uspjesna prijava korisnika " << name <<"."<< std::endl;
 		return true;
 	}
 	else std::cout << Message::getMessage(result);
@@ -50,7 +50,8 @@ void Menu::analystOptions(Invoice *invoices)
 		std::string buyer;
 		std::cout << "Unesite ime kupca:";
 		std::cin >> buyer;
-		std::vector<Invoice> buyers;//modifikovati kao std::vector<Invoice> buyers=InvoiceFilter::filter_by_buyer(invoices, int num_of_elements,buyer);
+		std::vector<Invoice> buyers = InvoiceFilter::filter_by_buyer(invoices,num_of_elements, buyer);
+		std::cout << std::endl << "Racuni za odredjenog kupca:"<<std::endl;
 		for (Invoice x : buyers)
 			x.print();
 	}
@@ -61,7 +62,8 @@ void Menu::analystOptions(Invoice *invoices)
 			std::cout << "Unesite datum:";
 			std::cin >> date;
 		} while (!Invoice::properDateFormat(date));
-		std::vector<Invoice> dates;//modifikovati kao std::vector<Invoice> dates=InvoiceFilter::filter_by_date(invoices, int num_of_elements,date);
+		std::vector<Invoice> dates = InvoiceFilter::filter_by_date(invoices, num_of_elements, date);
+		std::cout << std::endl << "Racuni za odredjeni datum:" << std::endl;
 		for (Invoice x : dates)
 			x.print();
 	}
@@ -70,7 +72,8 @@ void Menu::analystOptions(Invoice *invoices)
 		std::string art_name;
 		std::cout << "Unesite proizvod:";
 		std::cin >> art_name;
-		std::vector<Invoice> names;//modifikovati kao std::vector<Invoice> names=InvoiceFilter::filter_by_name(invoices, int num_of_elements,art_name);
+		std::vector<Invoice> names = InvoiceFilter::filter_by_name(invoices, num_of_elements, art_name);
+		std::cout << std::endl << "Racuni za odredjeni proizvod:" << std::endl;
 		for (Invoice x : names)
 			x.print();
 	}
@@ -89,16 +92,25 @@ void Menu::adminUserControl(Users &users)
 	std::cin >> i;
 	if (i == 1)
 	{
-		std::string name, surname, pin;
+		std::string name, surname, pin,message;
 		std::cout << std::endl << "Unesite ime:";
 		std::cin >> name;
 		std::cout << std::endl << "Unesite prezime:";
 		std::cin >> surname;
 		std::cout << std::endl << "Unesite pin:";
 		std::cin >> pin;
-		users.addUser(name, surname, pin);
+		message=users.addUser(name, surname, pin);
+		if (message[0] == '1') std::cout << std::endl << "Uspjesno ste dodali novog korisnika.";
+		else std::cout << std::endl << Message::getMessage(message);
 	}
-	else if (i == 2);
-		//users.deleteUser();
+	else if (i == 2)
+	{
+		std::string username,message;
+		std::cout << std::endl << "Unesite korisnicko ime korisnika kojeg zelite da obrisete:";
+		std::cin >> username;
+		message=users.deleteUser(username);
+		if (message[0] == '1') std::cout << std::endl << "Uspjesno ste obrisali korisnika " << username << ".";
+		else std::cout << std::endl << Message::getMessage(message);
+	}
 	std::cout << std::endl << "Zavrsili ste sa koristenjem opcija za upravljanje korisnickim nalozima.";
 }
