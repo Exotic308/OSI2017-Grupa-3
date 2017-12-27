@@ -42,7 +42,7 @@ std::string User::getEncryptedJSON()
 }
 void User::loadFromEncryptedJSON(std::string s) {
 	s = Encryption::xorEncryptDecrypt(s);
-	json j = s;
+	json j = json::parse(s);
 	name = j.at("name").get<std::string>();
 	surname = j.at("surname").get<std::string>();
 	username = j.at("username").get<std::string>();

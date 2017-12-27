@@ -45,14 +45,9 @@ bool FileManager::saveToFolder(std::string directory, std::string filename, std:
 
 bool FileManager::saveToFile(std::string path, std::string text)
 {
-	std::ofstream fp;
-	fp.open(path.c_str(), std::ios_base::in);
-	if (fp.is_open())
-	{
-		fp.seekp(std::ios_base::end);
-		fp << text << std::endl;
-		return true;
-	}
-	std::cout << "Neuspjesno otvaranje" << std::endl;
-	return false;
+	std::ofstream myfile;
+	myfile.open(path);
+	myfile << text;
+	myfile.close();
+	return true;
 }

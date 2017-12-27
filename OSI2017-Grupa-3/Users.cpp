@@ -1,23 +1,26 @@
 #include "Users.h"
 #include <algorithm>
 #include <vector>
-
+#include "InvoiceManager.h"
 
 Users::Users() : count(0), capacity(10)
 {
-	//poziv na Milosevu funkciju
-	//poziv na loadFromJSON
-	/*Markov kod
+	string s = InvoiceManager::getStringFromFile("users.txt");
+	std::cout << s;
+
 	users = new User[capacity];
-	std::ifstream file;
-	std::string temp = "";
-	file.open("Users.txt");
-	while (!file.eof()) {
-		capacityCheck();
-		std::getline(file, temp);
-		nlohmann::json j = nlohmann::json::parse(temp);
-		users[count++] = j;
-	}*/
+	if (s.empty()) {
+		addUser("admin", "1234");
+	}
+	else {
+		try {
+			loadFromJSON(nlohmann::json::parse(s));
+		}
+		catch (std::exception &e) {
+			addUser("admin", "1234");
+		}
+	}
+
 }
 
 Users::~Users()
@@ -44,6 +47,12 @@ std::string Users::addUser(std::string name, std::string surname, std::string pi
 	return "0Korisnik vec postoji.";
 }
 
+std::string Users::addUser(std::string username, std::string pin)
+{
+	users[count++] = User("", "", username, pin, 1);
+	return "1";
+}
+
 std::string Users::loginUser(std::string username, std::string pin, User& user)
 {
 	if (!userAlreadyExists(username))
@@ -68,17 +77,6 @@ std::string Users::deleteUser(std::string username)
 			return "1";
 		}
 	return "0Korisnik nije pronadjen.";
-}
-
-void Users::saveUsers()
-{
-/*	nlohmann::json j;
-	std::ofstream output;
-	output.open("Users.txt");
-	for (int i = 0; i < count; i++) {
-		j = users[i];
-		output << j << std::endl;
-	}*/
 }
 
 void Users::capacityCheck()
@@ -123,4 +121,6 @@ void Users::loadFromJSON(json j) {
 	count = j.at("count").get<int>();
 	capacity= j.at("capacity").get<int>();
 	std::vector<std::string> v = j.at("users").get<std::vector<std::string>>();
+	for (int i = 0; i < count; i++)
+		users[i].loadFromEncryptedJSON(v[i]);
 }
