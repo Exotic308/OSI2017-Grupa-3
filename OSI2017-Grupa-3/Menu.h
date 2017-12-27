@@ -4,6 +4,7 @@
 #include"Message.h"
 #include"Invoice.h"
 #include"InvoiceFilter.h"
+#include"InvoiceManager.h"
 class Menu
 {
 public:

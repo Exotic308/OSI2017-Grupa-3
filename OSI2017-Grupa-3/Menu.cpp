@@ -50,7 +50,7 @@ void Menu::analystOptions(Invoice *invoices)
 		std::string buyer;
 		std::cout << "Unesite ime kupca:";
 		std::cin >> buyer;
-		std::vector<Invoice> buyers = InvoiceFilter::filter_by_buyer(invoices,num_of_elements, buyer);
+		std::vector<Invoice> buyers = InvoiceFilter::filter_by_buyer(invoices, InvoiceManager::Instance->invoice_array.size() , buyer);
 		std::cout << std::endl << "Racuni za odredjenog kupca:"<<std::endl;
 		for (Invoice x : buyers)
 			x.print();
@@ -62,7 +62,7 @@ void Menu::analystOptions(Invoice *invoices)
 			std::cout << "Unesite datum:";
 			std::cin >> date;
 		} while (!Invoice::properDateFormat(date));
-		std::vector<Invoice> dates = InvoiceFilter::filter_by_date(invoices, num_of_elements, date);
+		std::vector<Invoice> dates = InvoiceFilter::filter_by_date(invoices, InvoiceManager::Instance->invoice_array.size(), date);
 		std::cout << std::endl << "Racuni za odredjeni datum:" << std::endl;
 		for (Invoice x : dates)
 			x.print();
@@ -72,7 +72,7 @@ void Menu::analystOptions(Invoice *invoices)
 		std::string art_name;
 		std::cout << "Unesite proizvod:";
 		std::cin >> art_name;
-		std::vector<Invoice> names = InvoiceFilter::filter_by_name(invoices, num_of_elements, art_name);
+		std::vector<Invoice> names = InvoiceFilter::filter_by_name(invoices, InvoiceManager::Instance->invoice_array.size(), art_name);
 		std::cout << std::endl << "Racuni za odredjeni proizvod:" << std::endl;
 		for (Invoice x : names)
 			x.print();
