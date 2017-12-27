@@ -19,14 +19,14 @@ void main() {
 	}
 	//Тестирање чувања енкриптоване Users инстанце у текстуалну датотеку
 	Users* users = new Users();
-	users->addUser("neven", "ignjic", "1234");
+	/*users->addUser("neven", "ignjic", "1234");
 	users->addUser("marko", "krstovic", "5678");
 	json j = users->getJSON();
 	std::string s = j.dump();
 	std::cout << s;
 	users->loadFromJSON(j);
 	User& u = (*new User());
-	std::cout << "\n"<<users->loginUser("neco", "12345", u);
+	std::cout << "\n"<<users->loginUser("neco", "12345", u);*/
 
 	User user; bool control = false;
 	do
@@ -49,7 +49,11 @@ void main() {
 		if (x == 1) control = false;
 		else control = true;
 	} while (!control);
-
+	//ОВО ТРЕБА ЕНКАПСУЛИРАТ
+	try {
+		FileManager::saveToFile("users.txt", users->getJSON());
+	}
+	catch (std::exception &e) {}
 	getchar();
 	getchar();
 }
