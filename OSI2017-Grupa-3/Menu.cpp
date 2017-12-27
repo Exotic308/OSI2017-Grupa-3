@@ -3,6 +3,7 @@
 
 bool Menu::requestLogin(Users& users, User &user)
 {
+	std::cout << std::endl << "PRIJAVA:" << std::endl;
 	std::string pin, name, result;
 	std::cout << "Unesite korisnicko ime:";
 	std::cin >> name;
@@ -33,7 +34,7 @@ void Menu::adminOptions(Users &users)
 	  adminUserControl(users);//rad sa korisnickim nalozima
 	else if (i == 2);
 	//rad sa valutom - trenutno nezavrsen dio
-	std::cout << std::endl << "Zavrsili ste sa koristenjem administratorovih opcija.";
+	std::cout << std::endl << "Zavrsili ste sa koristenjem administratorovih opcija."<<std::endl;
 }
 
 void Menu::analystOptions(Invoice *invoices)
@@ -78,7 +79,7 @@ void Menu::analystOptions(Invoice *invoices)
 		for (Invoice x : names)
 			x.print();
 	}
-	std::cout << std::endl << "Zavrsili ste sa koristenjem analiticarovih opcija.";
+	std::cout << std::endl << "Zavrsili ste sa koristenjem analiticarovih opcija."<<std::endl;
 }
 
 
@@ -113,5 +114,5 @@ void Menu::adminUserControl(Users &users)
 		if (message[0] == '1') std::cout << std::endl << "Uspjesno ste obrisali korisnika " << username << ".";
 		else std::cout << std::endl << Message::getMessage(message);
 	}
-	std::cout << std::endl << "Zavrsili ste sa koristenjem opcija za upravljanje korisnickim nalozima.";
+	std::cout << std::endl << "Zavrsili ste sa koristenjem opcija za upravljanje korisnickim nalozima."<<std::endl;
 }

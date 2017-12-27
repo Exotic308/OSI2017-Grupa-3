@@ -36,7 +36,7 @@ void main() {
 	} while (!control);
 
 	control = false;
-	Invoice *invoices = &main_manager.invoice_array[0];
+	Invoice *invoices = Invoice::castFromVectorToPointer(main_manager.invoice_array);
 	do
 	{
 		int x;
@@ -44,7 +44,7 @@ void main() {
 		else
 			Menu::analystOptions(invoices);
 
-		std::cout << std::endl << "Unesite 1 za novo pokretanje programa ili bilo koji karakter za izlaz iz programa";
+		std::cout << std::endl << "Unesite 1 za novo pokretanje programa ili bilo koji karakter za kraj rada..."<<std::endl;
 		std::cin >> x;
 		if (x == 1) control = false;
 		else control = true;

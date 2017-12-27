@@ -16,7 +16,6 @@ public:
 	std::string addUser(std::string, std::string);
 	std::string loginUser(std::string, std::string, User& user);
 	std::string deleteUser(std::string);
-	void saveUsers();
 	json getJSON();
 	void loadFromJSON(const json);
 private:
