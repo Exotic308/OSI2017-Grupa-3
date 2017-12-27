@@ -4,21 +4,18 @@
 #include "InvoiceParser.h"
 #include "Invoice.h"
 #include "Users.h"
+#include "InvoiceManager.h"
 
 //Почетни портал
 void main() {
 	std::cout << "Pocetni portal projektnog zadatka OSI2017-Grupa-3" << std::endl;
 
 	//Тестирање уноса рачуна
-	InvoiceParser* ips = new InvoiceParser();
-	Invoice invoice = *(new Invoice());
-	std::cout << InvoiceParser::racun1;
-	string message = ips->parseFromText(invoice, InvoiceParser::racun1);
-	std::cout << std::endl;
-	if (!Message::isSuccess(message))
-		std::cout << message;
-	invoice.print();
-
+	InvoiceManager main_manager;
+	std::cout << "\nBroj ucitanih racuna je " << main_manager.invoice_array.size()+"\n";
+	for (int i = 0; i < main_manager.invoice_array.size(); ++i) {
+		main_manager.invoice_array[i].print();
+	}
 	//Тестирање чувања енкриптоване Users инстанце у текстуалну датотеку
 	/*Users* users = new Users();
 	users->addUser("neven", "ignjic", "1234");

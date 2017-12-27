@@ -28,3 +28,9 @@ void InvoiceItem::print() {
 	cout << "Izracunata cijena: " << getTotalPrice() << endl;
 	cout << "Erori: " << hasErrors() << endl;
 }
+
+bool InvoiceItem::operator==(InvoiceItem &other)
+{
+	if (article == other.article&&price == other.price&&quantity == other.quantity&&totalPrice == other.totalPrice) return true;
+	return false;
+}

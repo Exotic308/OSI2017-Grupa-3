@@ -48,6 +48,9 @@
     <ClCompile Include="InvoiceParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InvoiceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Message.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InvoiceParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InvoiceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

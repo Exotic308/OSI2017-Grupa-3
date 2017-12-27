@@ -16,5 +16,6 @@ public:
 	string getErrors();
 	void print();
 	static bool properDateFormat(string);
+	bool operator==(Invoice&);
 };
 

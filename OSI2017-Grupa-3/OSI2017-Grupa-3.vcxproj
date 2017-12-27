@@ -116,6 +116,7 @@
     <ClCompile Include="Invoice.cpp" />
     <ClCompile Include="InvoiceFilter.cpp" />
     <ClCompile Include="InvoiceItem.cpp" />
+    <ClCompile Include="InvoiceManager.cpp" />
     <ClCompile Include="InvoiceParser.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="Invoice.h" />
     <ClInclude Include="InvoiceFilter.h" />
     <ClInclude Include="InvoiceItem.h" />
+    <ClInclude Include="InvoiceManager.h" />
     <ClInclude Include="InvoiceParser.h" />
     <ClInclude Include="JSONParser.hpp" />
     <ClInclude Include="Menu.h" />

@@ -4,9 +4,9 @@
 #include <vector>
 class InvoiceFilter
 {
-static std::vector<Invoice> filterInvoice(Invoice*, std::function <bool(Invoice, string)>, int, string); //univerzalna
+	static std::vector<Invoice> filterInvoice(Invoice*, std::function <bool(Invoice, string)>, int, string); //univerzalna
 public:
-static std::vector<Invoice> filter_by_buyer(Invoice*, int, string); //kupac
-static std::vector<Invoice> filter_by_date(Invoice*, int, string); //datum
-static std::vector<Invoice> filter_by_name(Invoice*, int, string); //proizvod
+	static std::vector<Invoice> filter_by_buyer(Invoice*, int, string); //kupac
+	static std::vector<Invoice> filter_by_date(Invoice*, int, string); //datum
+	static std::vector<Invoice> filter_by_name(Invoice*, int, string); //proizvod
 };

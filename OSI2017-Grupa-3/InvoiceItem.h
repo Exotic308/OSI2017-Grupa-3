@@ -12,4 +12,5 @@ public:
 	float getTotalPrice();
 	string hasErrors();
 	void print();
+	bool operator==(InvoiceItem&);
 };

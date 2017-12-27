@@ -38,8 +38,9 @@ std::vector<std::string> FileManager::GetPathsWithExtension(std::string ext, std
 
 bool FileManager::saveToFolder(std::string directory, std::string filename, std::string text)
 {
-	_mkdir(directory.c_str());
-	return saveToFile(directory + "\\" + filename, text);
+	std::string abs_path = getexepath() + directory;
+	_mkdir(abs_path.c_str());
+	return saveToFile(abs_path + "\\" + filename, text);
 }
 
 bool FileManager::saveToFile(std::string path, std::string text)

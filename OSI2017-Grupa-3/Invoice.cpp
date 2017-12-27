@@ -17,6 +17,8 @@ float Invoice::getPrice()
 
 string Invoice::getErrors()
 {
+	if (numItems == 0)
+		return "0Nije validan racun.";
 	if (numItems < 0)
 		return "0Broj proizvoda na racunu ne moze biti negativan.";
 	if (!properDateFormat(date))
@@ -78,4 +80,14 @@ bool Invoice::properDateFormat(string date)
 	default:
 		return true;
 	}
+}
+
+bool Invoice::operator==(Invoice &other)
+{
+	if (numItems == other.numItems&&price == other.price&&totalPrice == other.totalPrice&&PDV == other.PDV&&buyer == other.buyer&&date == other.date)
+	{
+		for (int i = 0; i < numItems; i++) if (!(items[i] == other.items[i])) return false;
+		return true;
+	}
+	return false;
 }
