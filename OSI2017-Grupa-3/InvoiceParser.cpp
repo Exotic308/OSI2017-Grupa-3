@@ -14,18 +14,24 @@ string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 		format = std::stoi(succes);
 	}
 	catch (const std::exception& e) {
-
-	}
-	switch (format)
-	{
-	case -1: return "0" + succes;
-	case 1: return parseFormat1(invoice, invoiceText);
-	case 2: return parseFormat2(invoice, invoiceText);
-	case 3: return parseFormat3(invoice, invoiceText);
-	case 4: return parseFormat4(invoice, invoiceText);
-	case 5: return parseFormat5(invoice, invoiceText);
-	default: return "0Format racuna nije validan.";
+		return "0Neocekivana greska.";
 	};
+	try {
+		switch (format)
+		{
+		case -1: return "0" + succes;
+		case 1: return parseFormat1(invoice, invoiceText);
+		case 2: return parseFormat2(invoice, invoiceText);
+		case 3: return parseFormat3(invoice, invoiceText);
+		case 4: return parseFormat4(invoice, invoiceText);
+		case 5: return parseFormat5(invoice, invoiceText);
+		default: return "0Format racuna nije validan.";
+		}
+	}
+	catch(std::exception &e)
+	{
+		return "0Neocekivana greska.";
+	}/*Osiguranje od run-time gresaka.*/
 }
 
 string InvoiceParser::detectFormat(string invoiceText)
