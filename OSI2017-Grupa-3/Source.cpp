@@ -13,7 +13,7 @@ void main() {
 
 	//Тестирање уноса рачуна
 	InvoiceManager main_manager;
-	std::cout << "\nBroj ucitanih racuna je " << main_manager.invoice_array.size()+"\n";
+	std::cout << "\nBroj ucitanih racuna je " << main_manager.invoice_array.size()<<"\n";
 	for (int i = 0; i < main_manager.invoice_array.size(); ++i) {
 		main_manager.invoice_array[i].print();
 	}
