@@ -5,6 +5,7 @@
 #include "Invoice.h"
 #include "Users.h"
 #include "InvoiceManager.h"
+#include"Menu.h"
 
 //Почетни портал
 void main() {
@@ -17,7 +18,7 @@ void main() {
 		main_manager.invoice_array[i].print();
 	}
 	//Тестирање чувања енкриптоване Users инстанце у текстуалну датотеку
-	/*Users* users = new Users();
+	Users* users = new Users();
 	users->addUser("neven", "ignjic", "1234");
 	users->addUser("marko", "krstovic", "5678");
 	json j = users->getJSON();
@@ -25,7 +26,29 @@ void main() {
 	std::cout << s;
 	users->loadFromJSON(j);
 	User& u = (*new User());
-	std::cout << "\n"<<users->loginUser("neco", "12345", u);*/
+	std::cout << "\n"<<users->loginUser("neco", "12345", u);
+
+	User user; bool control = false;
+	do
+	{
+		control = Menu::requestLogin(*users, user);//ISPRAVITI users AKO SE PROMJENI NACIN INSTANCIRANJA
+		if (!control) std::cout << std::endl << "Pokusajte ponovo." << std::endl;
+	} while (!control);
+
+	control = false;
+	Invoice *invoices = &main_manager.invoice_array[0];
+	do
+	{
+		int x;
+		if (user.isAdmin()) Menu::adminOptions(*users);//ISPRAVITI users AKO SE PROMJENI NACIN INSTANCIRANJA
+		else
+			Menu::analystOptions(invoices);
+
+		std::cout << std::endl << "Unesite 1 za novo pokretanje programa ili bilo koji karakter za izlaz iz programa";
+		std::cin >> x;
+		if (x == 1) control = false;
+		else control = true;
+	} while (!control);
 
 	getchar();
 	getchar();
