@@ -10,6 +10,7 @@ class InvoiceManager
 {
 	bool alreadyExists(Invoice&);
 public:
+	static InvoiceManager *Instance;
 	static string getStringFromFile(const char * path);
 	vector<Invoice> invoice_array;
 	vector<Invoice> filterValid();

@@ -48,6 +48,7 @@ Invoice InvoiceManager::loadFromFile(const char * path)
 
 InvoiceManager::InvoiceManager()
 {
+	Instance = this;
 	scanForNewInvoices();
 }
 
