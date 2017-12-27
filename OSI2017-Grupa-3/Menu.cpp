@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "InvoiceManager.h"
 
 bool Menu::requestLogin(Users& users, User &user)
 {

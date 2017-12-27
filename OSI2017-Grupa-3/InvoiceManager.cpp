@@ -1,6 +1,8 @@
 #include "InvoiceManager.h"
 #include <sstream>
 #include "Message.h"
+
+InvoiceManager* InvoiceManager::Instance;
 bool InvoiceManager::alreadyExists(Invoice& compare)
 {
 	//for (Invoice i : invoice_array) if (i == compare) return true;
