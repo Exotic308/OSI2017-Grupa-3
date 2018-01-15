@@ -9,18 +9,18 @@ Users::Users() : count(0), capacity(10)
 	std::cout << s;
 
 	users = new User[capacity];
-	if (s.empty()) {
+	
+	try {
+		std::string test = s;
+		test.pop_back();
+		if (test.empty())
+			throw("Datoteka sa podacima o korisnicima je prazna.");
+		loadFromJSON(nlohmann::json::parse(s));
+	}
+	catch (const char* message) {
+		std::cout << message << std::endl;
 		addUser("admin", "1234");
 	}
-	else {
-		try {
-			loadFromJSON(nlohmann::json::parse(s));
-		}
-		catch (std::exception &e) {
-			addUser("admin", "1234");
-		}
-	}
-
 }
 
 Users::~Users()
@@ -105,19 +105,21 @@ bool Users::userAlreadyExists(std::string username)
 	return false;
 }
 
-json Users::getJSON() {
-	json j = json{ 
-		{ "count", count },
-		{ "capacity", capacity },
-	};
+json Users::getJSON()
+{
 	std::vector<std::string> v;
 	for (int i = 0; i < count; ++i)
 		v.push_back(users[i].getEncryptedJSON());
-	j["users"] = v;
+	json j = json{
+		{ "count", count },
+		{ "capacity", capacity },
+		{ "users", v }
+	};
 	return j;
 }
 
-void Users::loadFromJSON(json j) {
+void Users::loadFromJSON(json j) 
+{
 	count = j.at("count").get<int>();
 	capacity= j.at("capacity").get<int>();
 	std::vector<std::string> v = j.at("users").get<std::vector<std::string>>();

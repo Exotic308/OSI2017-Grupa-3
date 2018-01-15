@@ -17,16 +17,24 @@ std::string User::hasErrors()
 	return "1";
 }
 
-void User::encryptPin(Encryption& crypto)
+std::string User::encryptPin()
 {
-	crypto.encrypt(pin);
-	encryptedPin = crypto.encryptedMessage;
-	decryptionKey = crypto.getKey();
+	if (!isPinEncrypted) {
+		Encryption::xorEncryptDecrypt(pin);
+		isPinEncrypted = true;
+		return "1";
+	}
+	return "0Pin je vec enkriptovan.";
 }
 
-std::string User::decryptKey(Encryption& crypto)
+std::string User::decryptPin()
 {
-	return crypto.decrypt(decryptionKey);
+	if (isPinEncrypted) {
+		Encryption::xorEncryptDecrypt(pin);
+		isPinEncrypted = false;
+		return "1";
+	}
+	return "0Pin nije enkriptovan.";
 }
 
 std::string User::getEncryptedJSON()

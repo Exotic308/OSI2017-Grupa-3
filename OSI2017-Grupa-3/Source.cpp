@@ -50,10 +50,10 @@ void main() {
 		else control = true;
 	} while (!control);
 	//ОВО ТРЕБА ЕНКАПСУЛИРАТ
-	try {
-		FileManager::saveToFile("users.txt", users->getJSON());
-	}
-	catch (std::exception &e) {}
+	//try {
+		FileManager::saveToFile("users.txt", (users->getJSON()).dump());
+	//}
+	//catch (std::exception &e) {}
 	getchar();
 	getchar();
 }
