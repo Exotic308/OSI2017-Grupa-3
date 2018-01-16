@@ -1,6 +1,31 @@
 #include "Menu.h"
 #include "InvoiceManager.h"
 
+void Menu::UserUI(InvoiceManager &main_manager, Users *users)
+{
+	User user; bool control = false;
+	do
+	{
+		control = Menu::requestLogin(*users, user);
+		if (!control) std::cout << std::endl << "Pokusajte ponovo." << std::endl;
+	} while (!control);
+
+	control = false;
+	Invoice *invoices = Invoice::castFromVectorToPointer(main_manager.invoice_array);
+	do
+	{
+		int x;
+		if (user.isAdmin()) Menu::adminOptions(*users);
+		else
+			Menu::analystOptions(invoices);
+
+		std::cout << std::endl << "Unesite 1 za novo pokretanje programa ili bilo koji karakter za kraj rada..." << std::endl;
+		std::cin >> x;
+		if (x == 1) control = false;
+		else control = true;
+	} while (!control);
+}
+
 bool Menu::requestLogin(Users& users, User &user)
 {
 	std::cout << std::endl << "PRIJAVA:" << std::endl;

@@ -28,28 +28,7 @@ void main() {
 	User& u = (*new User());
 	std::cout << "\n"<<users->loginUser("neco", "12345", u);*/
 
-	User user; bool control = false;
-	do
-	{
-		control = Menu::requestLogin(*users, user);//ISPRAVITI users AKO SE PROMJENI NACIN INSTANCIRANJA
-		if (!control) std::cout << std::endl << "Pokusajte ponovo." << std::endl;
-	} while (!control);
-
-	control = false;
-	Invoice *invoices = Invoice::castFromVectorToPointer(main_manager.invoice_array);
-	do
-	{
-		int x;
-		if (user.isAdmin()) Menu::adminOptions(*users);//ISPRAVITI users AKO SE PROMJENI NACIN INSTANCIRANJA
-		else
-			Menu::analystOptions(invoices);
-
-		std::cout << std::endl << "Unesite 1 za novo pokretanje programa ili bilo koji karakter za kraj rada..."<<std::endl;
-		std::cin >> x;
-		if (x == 1) control = false;
-		else control = true;
-	} while (!control);
-	//ОВО ТРЕБА ЕНКАПСУЛИРАТ
+	Menu::UserUI(main_manager,users);
 	//try {
 		FileManager::saveToFile("users.txt", (users->getJSON()).dump());
 	//}

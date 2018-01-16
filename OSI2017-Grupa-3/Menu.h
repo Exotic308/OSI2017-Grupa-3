@@ -8,6 +8,7 @@
 class Menu
 {
 public:
+	static void UserUI(InvoiceManager&, Users*);
 	static bool requestLogin(Users &, User &);
 	static void adminOptions(Users&);
 	static void analystOptions(Invoice*);
