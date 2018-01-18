@@ -5,7 +5,7 @@
 InvoiceManager* InvoiceManager::Instance;
 bool InvoiceManager::alreadyExists(Invoice& compare)
 {
-	//for (Invoice i : invoice_array) if (i == compare) return true;
+	for (Invoice i : invoice_array) if (i == compare) return true;
 	return false;
 }
 
@@ -27,9 +27,9 @@ void InvoiceManager::scanForNewInvoices()
 	for (int i=0;i<paths.size();i++)
 	{
 		Invoice tmp = loadFromFile(paths[i].c_str());
-		if (!alreadyExists(tmp) && Message::isSuccess(tmp.getErrors()))
-			std::cout << Message::getMessage(tmp.getErrors());
-		else invoice_array.push_back(tmp);
+		/*if (!alreadyExists(tmp) && Message::isSuccess(tmp.getErrors()))
+			std::cout << Message::getMessage(tmp.getErrors());*/
+		invoice_array.push_back(tmp);
 	}
 }
 
@@ -42,7 +42,7 @@ string InvoiceManager::getStringFromFile(const char * path) {
 Invoice InvoiceManager::loadFromFile(const char * path)
 {
 	Invoice ret;
-	InvoiceParser instanca;
+	InvoiceParser instanca; //je li metoda pretvorena u staticku?
 	std::string str = getStringFromFile(path);
     instanca.parseFromText(ret, str);
 	return ret;

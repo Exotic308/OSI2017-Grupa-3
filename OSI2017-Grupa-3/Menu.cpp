@@ -11,7 +11,9 @@ void Menu::UserUI(InvoiceManager &main_manager, Users *users)
 	} while (!control);
 
 	control = false;
-	Invoice *invoices = Invoice::castFromVectorToPointer(main_manager.invoice_array);
+	Invoice *invoices = Invoice::castFromVectorToPointer(main_manager.invoice_array); 
+	/*Mozes koristiti npr [ std::vector<Invoice> invoices ] a u filterima da proslijedis 
+	kao pokazivac Invoice* tipa koristi [ &invoices[0] ] , provjereno*/
 	do
 	{
 		int x;

@@ -32,7 +32,7 @@ std::vector<std::string> FileManager::GetPathsWithExtension(std::string ext, std
 		s = p.path().string();
 		std::string tempExt = s.substr(s.length() - 3, 3);
 		if (tempExt == ext) paths[counter++] = s;
-	}
+	};
 	return paths;
 }
 

@@ -6,6 +6,7 @@
 #include "Users.h"
 #include "InvoiceManager.h"
 #include"Menu.h"
+#include <vector>
 
 //Почетни портал
 void main() {
@@ -13,26 +14,20 @@ void main() {
 
 	//Тестирање уноса рачуна
 	InvoiceManager main_manager;
-	std::cout << "\nBroj ucitanih racuna je " << main_manager.invoice_array.size()<<"\n";
+	std::cout << "\nBroj ucitanih racuna je " << main_manager.invoice_array.size() << "\n";
 	for (int i = 0; i < main_manager.invoice_array.size(); ++i) {
 		main_manager.invoice_array[i].print();
 	}
-	//Тестирање чувања енкриптоване Users инстанце у текстуалну датотеку
-	Users* users = new Users();
-	/*users->addUser("neven", "ignjic", "1234");
-	users->addUser("marko", "krstovic", "5678");
-	json j = users->getJSON();
-	std::string s = j.dump();
-	std::cout << s;
-	users->loadFromJSON(j);
-	User& u = (*new User());
-	std::cout << "\n"<<users->loginUser("neco", "12345", u);*/
-
-	Menu::UserUI(main_manager,users);
-	//try {
-		FileManager::saveToFile("users.txt", (users->getJSON()).dump());
-	//}
-	//catch (std::exception &e) {}
+	std::cout << "\n\n\nFILTER RADI\n\n\n";
+	std::vector<Invoice> filtered2 = InvoiceFilter::filter_by_buyer(&main_manager.invoice_array[0], main_manager.invoice_array.size(), "ABC");
+	std::vector<Invoice> filtered = InvoiceFilter::filter_by_date(&main_manager.invoice_array[0], main_manager.invoice_array.size(), "24/10/2017");
+	std::vector<Invoice> filtered3 = InvoiceFilter::filter_by_name(&main_manager.invoice_array[0], main_manager.invoice_array.size(), "abc");
+	for (int i = 0; i < filtered.size(); i++) filtered[i].print();
+	std::cout << "=================================\n";
+	for (int i = 0; i < filtered2.size(); i++) filtered2[i].print();
+	std::cout << "=================================\n";
+	for (int i = 0; i < filtered3.size(); i++) filtered3[i].print();
+	std::cout << "=================================\n";
 	getchar();
 	getchar();
 }
