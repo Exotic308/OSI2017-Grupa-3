@@ -2,7 +2,7 @@
 
 
 
-
+/*Metoda koja vrsi enkripciju stringa ukoliko nije enkriptovan, odnosno dekripciju ukoliko jeste*/
 std::string Encryption::xorEncryptDecrypt(std::string s) {
 	char key[3] = { 'K', 'C', 'Q' };
 	std::string output = s;

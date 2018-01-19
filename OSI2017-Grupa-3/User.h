@@ -2,7 +2,9 @@
 #include <iostream>
 #include "JSONParser.hpp"
 #include "Encryption.h"
+
 using nlohmann::json;
+
 class User
 {
 	bool admin;

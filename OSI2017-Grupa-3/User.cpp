@@ -6,6 +6,7 @@
 User::User(std::string name, std::string surname, std::string username, std::string pin, bool admin) : name(name), surname(surname), username(username), pin(pin), admin(admin)
 {}
 
+/*Metoda koja provjerava da li je format unesenog pin koda ispravan (4 cifre)*/
 std::string User::hasErrors()
 {
 	if (pin.length() != 4)
@@ -17,6 +18,7 @@ std::string User::hasErrors()
 	return "1";
 }
 
+/*Metoda koja obavlja enkripciju pin koda*/
 std::string User::encryptPin()
 {
 	if (!isPinEncrypted) {
@@ -27,6 +29,7 @@ std::string User::encryptPin()
 	return "0Pin je vec enkriptovan.";
 }
 
+/*Metoda koja obavlja dekripciju pin koda*/
 std::string User::decryptPin()
 {
 	if (isPinEncrypted) {
@@ -37,6 +40,7 @@ std::string User::decryptPin()
 	return "0Pin nije enkriptovan.";
 }
 
+/*Metoda koja objekat klase User pretvara u enkriptovani string*/
 std::string User::getEncryptedJSON()
 {
 	json j = {
@@ -48,9 +52,12 @@ std::string User::getEncryptedJSON()
 	};
 	return Encryption::xorEncryptDecrypt(j.dump());
 }
-void User::loadFromEncryptedJSON(std::string s) {
+
+/*Metoda koja formira objekat na osnovu podataka iz enkriptovanog stringa*/
+void User::loadFromEncryptedJSON(std::string s) 
+{
 	s = Encryption::xorEncryptDecrypt(s);
-	json j = json::parse(s);
+	json j = json::parse(s);	//pretvaranje stringa u JSON objekat
 	name = j.at("name").get<std::string>();
 	surname = j.at("surname").get<std::string>();
 	username = j.at("username").get<std::string>();

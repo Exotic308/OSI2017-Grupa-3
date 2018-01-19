@@ -139,9 +139,7 @@ void Menu::adminUserControl(Users &users)
 		std::cin >> name;
 		std::cout << std::endl << "Unesite prezime:";
 		std::cin >> surname;
-		std::cout << std::endl << "Unesite pin:";
-		std::cin >> pin;
-		message=users.addUser(name, surname, pin); 
+		message=users.addUser(name, surname); 
 		if (message[0] == '1') std::cout << std::endl << "Uspjesno ste dodali novog korisnika.";
 		else std::cout << std::endl << Message::getMessage(message);
 	}

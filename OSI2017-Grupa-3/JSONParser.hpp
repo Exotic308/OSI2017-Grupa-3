@@ -1,3 +1,7 @@
+/*Klasa koja sluzi za konverziju instance proizvoljne klase u string i obratno.
+Definisane su metode kojima je omogucena konverzija klasa User i Users (implementacija unutar navedenih klasa).*/
+
+
 #ifndef NLOHMANN_JSON_HPP
 #define NLOHMANN_JSON_HPP
 
