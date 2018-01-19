@@ -13,7 +13,7 @@ void main() {
 	std::cout << "Pocetni portal projektnog zadatka OSI2017-Grupa-3" << std::endl;
 
 	//Тестирање уноса рачуна
-	InvoiceManager main_manager;
+	InvoiceManager main_manager; Users users;
 	std::cout << "\nBroj ucitanih racuna je " << main_manager.invoice_array.size() << "\n";
 	for (int i = 0; i < main_manager.invoice_array.size(); ++i) {
 		main_manager.invoice_array[i].print();
@@ -28,6 +28,10 @@ void main() {
 	std::cout << "=================================\n";
 	for (int i = 0; i < filtered3.size(); i++) filtered3[i].print();
 	std::cout << "=================================\n";
+
+	users.addUser("Milos", "Trivundza","1234");//тестни корисник
+	Menu::UserUI(main_manager, &users);
+
 	getchar();
 	getchar();
 }

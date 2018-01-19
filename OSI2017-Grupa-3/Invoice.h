@@ -17,6 +17,5 @@ public:
 	void print();
 	static bool properDateFormat(string);
 	bool operator==(Invoice&);
-	static Invoice* castFromVectorToPointer(std::vector<Invoice>&);
 };
 

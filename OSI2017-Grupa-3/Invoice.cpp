@@ -91,13 +91,3 @@ bool Invoice::operator==(Invoice &other)
 	}
 	return false;
 }
-
-Invoice * Invoice::castFromVectorToPointer(std::vector<Invoice>& vector)
-{
-	Invoice *pointerInvoice = new Invoice[vector.size()];
-	for (int i = 0; i < vector.size(); ++i)
-	{
-		pointerInvoice[i] = vector[i];
-	}
-	return pointerInvoice;
-}
