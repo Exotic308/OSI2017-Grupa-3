@@ -2,13 +2,17 @@
 #include <sstream>
 #include "Message.h"
 
+/*Staticka instanca (singleton) InvoiceManager-a.*/
 InvoiceManager* InvoiceManager::Instance;
+
+/*Provjera vec postojuceg racuna u nizu.*/
 bool InvoiceManager::alreadyExists(Invoice& compare)
 {
 	for (Invoice i : invoice_array) if (i == compare) return true;
 	return false;
 }
 
+/*Funkcija za filtriranje validnih racuna u nizu.*/
 vector<Invoice> InvoiceManager::filterValid()
 {
 	vector<Invoice> ret;
@@ -20,6 +24,7 @@ vector<Invoice> InvoiceManager::filterValid()
 	return ret;
 }
 
+/*Funkcija za skeniranje novih racuna u okruzenju aplikacije.*/
 void InvoiceManager::scanForNewInvoices()
 {
 	string exepath = FileManager::getexepath();
@@ -33,12 +38,15 @@ void InvoiceManager::scanForNewInvoices()
 	}
 }
 
+/*Funkcija koja ucitava sadrzaj datoteke u obliku string-a.*/
 string InvoiceManager::getStringFromFile(const char * path) {
 	std::ifstream t(path);
 	std::stringstream buffer;
 	buffer << t.rdbuf();
 	return buffer.str() + "\n";
 }
+
+/*Funkcija koja ucitava podatak iz odgovarajuceg fajla te ga cuva u obliku Invoice-a.*/
 Invoice InvoiceManager::loadFromFile(const char * path)
 {
 	Invoice ret;

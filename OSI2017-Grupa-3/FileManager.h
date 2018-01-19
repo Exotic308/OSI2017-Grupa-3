@@ -6,8 +6,8 @@
 class FileManager
 {
 public:
-	static std::string getexepath(); // funkcija koja trazi i vraca kao rezultat lokaciju programa
-	static bool saveToFile(std::string, std::string); // funkcija sa opcijom da sacuva fajl u odgovarajuci direktorijum
-	static std::vector<std::string> GetPathsWithExtension(std::string ext, std::string relativePath = ""); //funkcija koja trazi sve fajlove u odovarajucem direktorijumu sa trazenom ekstenzijom
-	static bool saveToFolder(std::string, std::string, std::string); // funkcija koja cuva odg. tekst u odg. fajl u odg. direktorijum
+	static std::string getexepath(); 
+	static bool saveToFile(std::string, std::string); 
+	static std::vector<std::string> GetPathsWithExtension(std::string ext, std::string relativePath = ""); 
+	static bool saveToFolder(std::string, std::string, std::string);
 };

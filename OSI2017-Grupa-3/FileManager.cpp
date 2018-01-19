@@ -5,6 +5,7 @@
 #include <direct.h>
 namespace fs = std::experimental::filesystem;
 
+/*Funkcija koja trazi i vraca kao rezultat lokaciju programa.*/
 std::string FileManager::getexepath()
 {
 	char result[MAX_PATH];
@@ -14,6 +15,7 @@ std::string FileManager::getexepath()
 	return(std::string(result).substr(0, found) + "\\");
 }
 
+/*Funkcija koja trazi sve fajlove u odovarajucem direktorijumu sa trazenom ekstenzijom.*/
 std::vector<std::string> FileManager::GetPathsWithExtension(std::string ext, std::string relativePath)
 {
 	std::string path = getexepath();
@@ -36,6 +38,7 @@ std::vector<std::string> FileManager::GetPathsWithExtension(std::string ext, std
 	return paths;
 }
 
+/*Funkcija sa opcijom da sacuva fajl u odgovarajuci direktorijum.*/
 bool FileManager::saveToFolder(std::string directory, std::string filename, std::string text)
 {
 	std::string abs_path = getexepath() + directory;
@@ -43,6 +46,7 @@ bool FileManager::saveToFolder(std::string directory, std::string filename, std:
 	return saveToFile(abs_path + "\\" + filename, text);
 }
 
+/*Funkcija koja cuva odgovarajuci tekst u odgovarajuci fajl u odgovarajuci direktorijum*/
 bool FileManager::saveToFile(std::string path, std::string text)
 {
 	std::ofstream myfile;
