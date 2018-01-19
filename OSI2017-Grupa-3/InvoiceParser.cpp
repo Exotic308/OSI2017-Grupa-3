@@ -6,6 +6,7 @@
 
 using std::stringstream;
 
+/*Metode koja prima string (racun ucitan u obliku stringa) i iz njega "izvlaci" podatke i smjesta u klasu invoice.*/
 string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 {
 	int format = -1;
@@ -33,7 +34,7 @@ string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 		return "0Neocekivana greska.";
 	}/*Osiguranje od run-time gresaka.*/
 }
-
+/*Metoda koja detektuje koji od formata racuna je u pitanju.*/
 string InvoiceParser::detectFormat(string invoiceText)
 {
 	const int invalidFormat = 0;
@@ -102,9 +103,9 @@ string InvoiceParser::detectFormat(string invoiceText)
 	else if (temporary1.compare("Sifra,Kolicina,Cijena,Ukupno")==0)/*Format 5.*/
 		return "5";
 	else
-		return "Neprepoznatiljiv format(greska u prvom redu).";/*Nepodrzan format.*/
+		return "Neprepoznatljiv format(greska u prvom redu).";/*Nepodrzan format.*/
 }
-
+/*Metoda koja izvlaci informacije iz formata racuna broj 1 i smjesta ih u strukturu invoice.*/
 string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 {
 	int position = 0;
@@ -163,6 +164,7 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 		return errors;
 	return "1";
 }
+/*Metoda koja uklanja odredjeni char iz stringa.*/
 void InvoiceParser::RemoveChar(string& str, char c)
 {
 	string result;
@@ -174,6 +176,7 @@ void InvoiceParser::RemoveChar(string& str, char c)
 	}
 	str = result;
 }
+/*Metoda koja izvlaci informacije iz formata racuna broj 2 i smjesta ih u strukturu invoice.*/
 string InvoiceParser::parseFormat2(Invoice &invoice, string invoiceText)
 {
 	int position = 0;
@@ -206,7 +209,7 @@ string InvoiceParser::parseFormat2(Invoice &invoice, string invoiceText)
 		stringstream stringStream2(stringValue);
 		stringStream2 >> value1 >> value2 >> c >> invoice.items[j].quantity >> c >> invoice.items[j].price >> c >> invoice.items[j].totalPrice;
 		invoice.items[j].article = value1 + value2;
-	}/*Unosimo artikal po artikal.Sabiramo dva stringa jer smo glupi da to odradimo odvojeno.*/
+	}/*Unosimo artikal po artikal.Sabiramo dva stringa.*/
 
 	invoice.numItems = countItems;
 
@@ -234,7 +237,7 @@ string InvoiceParser::parseFormat2(Invoice &invoice, string invoiceText)
 
 	return "1";
 }
-/*Komentar.*/
+/*Metoda koja izvlaci informacije iz formata racuna broj 3 i smjesta ih u strukturu invoice.*/
 string InvoiceParser::parseFormat3(Invoice &invoice, string invoiceText)
 {
 	int position = 0;
@@ -272,7 +275,7 @@ string InvoiceParser::parseFormat3(Invoice &invoice, string invoiceText)
 		stringstream stringStream2(stringValue);
 		stringStream2 >> value1 >> value2 >> invoice.items[j].quantity >> invoice.items[j].price >> invoice.items[j].totalPrice;
 		invoice.items[j].article = value1 + value2;
-	}/*Unosimo artikal po artikal.Sabiramo dva stringa jer smo glupi da to odradimo odvojeno.*/
+	}/*Unosimo artikal po artikal.Sabiramo dva stringa.*/
 
 	invoice.numItems = countItems;
 
@@ -294,7 +297,7 @@ string InvoiceParser::parseFormat3(Invoice &invoice, string invoiceText)
 	return "1";
 
 }
-
+/*Metoda koja izvlaci informacije iz formata racuna broj 4 i smjesta ih u strukturu invoice.*/
 string InvoiceParser::parseFormat4(Invoice &invoice, string invoiceText)
 {
 	int position = 0;
@@ -330,7 +333,7 @@ string InvoiceParser::parseFormat4(Invoice &invoice, string invoiceText)
 		stringstream stringStream3(stringValue);
 		stringStream3 >> value1 >> value2 >> c >> invoice.items[j].quantity >> c >> invoice.items[j].price >> c >> invoice.items[j].totalPrice;
 		invoice.items[j].article = value1 + value2;
-	}/*Unosimo artikal po artikal.Sabiramo dva stringa  jer smo glupi da to odradimo odvojeno.  */
+	}/*Unosimo artikal po artikal.Sabiramo dva stringa.*/
 
 	stringValue = getLineOfText(position, invoiceText);
 	stringValue = getLineOfText(position, invoiceText);/*Sklanjamo red crtica,i uzimamo red cijene i ucitavamo je.*/
@@ -353,6 +356,7 @@ string InvoiceParser::parseFormat4(Invoice &invoice, string invoiceText)
 	return "1";
 }
 
+/*Metoda koja izvlaci informacije iz formata racuna broj 5 i smjesta ih u strukturu invoice.*/
 string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText)
 {
 	string stringValue;
@@ -395,7 +399,7 @@ string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText)
 	return "1";
 
 }
-
+/*Metoda koja se pomjera za odredjen broj redova,uzima trenutnu poziciju u stringu i vraca novu poziciju.*/
 int InvoiceParser::moveRows(int rows, int position, string inputText)
 {
 	int count = 0, i;
@@ -404,7 +408,7 @@ int InvoiceParser::moveRows(int rows, int position, string inputText)
 			count++;
 	return i;
 }
-
+/*Metoda koja kupi liniju teksta do znaka \n tj. kupi red teksta iz stringa i azurira poziciju na sljedeci red.*/
 string InvoiceParser::getLineOfText(int& position, string inputText)
 {
 	string result;
@@ -413,7 +417,7 @@ string InvoiceParser::getLineOfText(int& position, string inputText)
 	position++;
 	return result;
 }
-
+/*Metoda koja kupi sve znakove do zapete i azurira poziciju na prvi znak iza zapete.*/
 string InvoiceParser::getStringUntilComma(int &position, string inputString)
 {
 	string result;
@@ -422,6 +426,7 @@ string InvoiceParser::getStringUntilComma(int &position, string inputString)
 	return result;
 }
 
+/*Metoda koja racuna broj artikala u formatu 5.*/
 int InvoiceParser::getNumberOfItemsFormat5(string inputText)
 {
 	int countCommas = 0, i = 0;
@@ -433,6 +438,7 @@ int InvoiceParser::getNumberOfItemsFormat5(string inputText)
 	return (countCommas - 3) / 3;
 }
 
+/*Metoda koja uklanja znakove izmedju podataka o artiklu i pretvara ih u format povoljan za koristenje stringstream-a.*/
 string InvoiceParser::turnToGoodFormat(string inputString)
 {
 	string result;
@@ -446,6 +452,7 @@ string InvoiceParser::turnToGoodFormat(string inputString)
 	return result;
 }
 
+/*Metoda koja kupi string brojeva do sljedeceg znaka i azurira poziciju na sljedeci znak.*/
 string InvoiceParser::getStringOfNumbersUntilLetter(int &position, string inputText)
 {
 	string result;
