@@ -3,11 +3,10 @@
 #include <vector>
 #include "InvoiceManager.h"
 
-Users::Users() : count(0), capacity(10)
+Users::Users()
 {
-	string s = InvoiceManager::getStringFromFile("users.txt");
-
-	users = new User[capacity];
+	string exe = FileManager::getexepath();
+	string s = FileManager::getStringFromFile((exe + "Users\\users.txt").c_str());
 	
 	//Pokusaj ucitavanja korisnika iz fajla "users.txt"
 	try {
@@ -21,11 +20,6 @@ Users::Users() : count(0), capacity(10)
 		std::cout << message << std::endl;
 		addUser();	//Dodavanje korisnika "admin" ukoliko je fajl prazan
 	}
-}
-
-Users::~Users()
-{
-	delete[] users;
 }
 
 /*Metoda koja dodaje novog korisnika u sistem*/
@@ -53,8 +47,7 @@ std::string Users::addUser(std::string name, std::string surname)
 				ctrl = 1;
 			}
 		} while (ctrl);
-		capacityCheck();
-		users[count++] = temp;
+		users.push_back(temp);
 		return "1";
 	}
 	return "0Korisnik vec postoji.";
@@ -64,7 +57,7 @@ std::string Users::addUser(std::string name, std::string surname)
 Poziva se samo ukoliko je fajl iz koga se ucitavaju korisnici prazan.*/
 std::string Users::addUser()
 {
-	users[count++] = User("", "", "admin", "1234", 1);
+	users.push_back(User("", "", "admin", "1234", 1));
 	return "1";
 }
 
@@ -75,7 +68,7 @@ std::string Users::loginUser(std::string username, std::string pin, User& user)
 		return "0Korisnik ne postoji.";
 	if (!userAlreadyExists(username, pin))
 		return "0Netacan pin.";
-	for(int i=0;i<count;i++)
+	for (int i = 0; i < users.size(); i++)
 		if (users[i].username == username) {
 			user = users[i];
 			break;
@@ -86,31 +79,18 @@ std::string Users::loginUser(std::string username, std::string pin, User& user)
 /*Metoda koja sluzi za brisanje korisnika iz sistema*/
 std::string Users::deleteUser(std::string username)
 {
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < users.size(); i++)
 		if (users[i].username == username) {
-			for (int j = i; j < count; j++)
-				users[j] = users[j + 1];
-			--count;
+			users.erase(users.begin() + i);
 			return "1";
 		}
 	return "0Korisnik nije pronadjen.";
 }
 
-/*Metoda koja provjerava da li ima dovoljno alociranog prostora za niz korisnika i povecava kapacitet ukoliko nema*/
-void Users::capacityCheck()
-{
-	if (count == capacity) {
-		User* temp = users;
-		users = new User[capacity *= 2];
-		for (int i = 0; i < count; i++)
-			users[i] = temp[i];
-	}
-}
-
 /*Metoda koja vraca informaciju da li postoji korisnik sa datim korisnickim imenom i pin kodom*/
 bool Users::userAlreadyExists(std::string username, std::string pin)
 {
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < users.size(); i++)
 		if (users[i].username == username&&users[i].getPin() == pin)
 			return true;
 	return false;
@@ -119,7 +99,7 @@ bool Users::userAlreadyExists(std::string username, std::string pin)
 /*Metoda koja vraca informaciju da li postoji korisnik sa datim korisnickim imenom*/
 bool Users::userAlreadyExists(std::string username)
 {
-	for (int i = 0; i < count; i++)
+	for (int i = 0; i < users.size(); i++)
 		if (users[i].username == username)
 			return true;
 	return false;
@@ -129,11 +109,9 @@ bool Users::userAlreadyExists(std::string username)
 json Users::getJSON()
 {
 	std::vector<std::string> v;
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < users.size(); ++i)
 		v.push_back(users[i].getEncryptedJSON());	//Formiranje enkriptovanog niza stringova koji predstavljaju podatke o korisnicima
 	json j = json{
-		{ "count", count },
-		{ "capacity", capacity },
 		{ "users", v }
 	};
 	return j;
@@ -142,9 +120,13 @@ json Users::getJSON()
 /*Metoda koja formira objekat klase Users na osnovu podataka odgovarajuceg JSON objekta*/
 void Users::loadFromJSON(json j) 
 {
-	count = j.at("count").get<int>();
-	capacity= j.at("capacity").get<int>();
 	std::vector<std::string> v = j.at("users").get<std::vector<std::string>>();
-	for (int i = 0; i < count; i++)
-		users[i].loadFromEncryptedJSON(v[i]);	//Ucitavanje korisnika iz JSON objekta i njihova dekripcija
+	for (int i = 0; i < v.size(); i++) {
+		User temp;
+		temp.loadFromEncryptedJSON(v[i]);		//Ucitavanje korisnika iz JSON objekta i njihova dekripcija
+		users.push_back(temp);
+	}
 }
+
+Users::~Users()
+{}

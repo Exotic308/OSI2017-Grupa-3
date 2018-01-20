@@ -55,3 +55,11 @@ bool FileManager::saveToFile(std::string path, std::string text)
 	myfile.close();
 	return true;
 }
+
+/*Funkcija koja ucitava sadrzaj datoteke u obliku string-a.*/
+std::string FileManager::getStringFromFile(const char * path) {
+	std::ifstream t(path);
+	std::stringstream buffer;
+	buffer << t.rdbuf();
+	return buffer.str() + "\n";
+}

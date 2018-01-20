@@ -39,12 +39,12 @@ void InvoiceManager::scanForNewInvoices()
 		if (!Message::isSuccess(message))
 		{ 
 			invoice_array_invalid.push_back(tmp); 
-			FileManager::saveToFolder("Invalidni", "racun"+invoice_count+"_error.txt", getStringFromFile(paths[i].c_str()));
+			FileManager::saveToFolder("Invalidni", "racun"+invoice_count+"_error.txt", FileManager::getStringFromFile(paths[i].c_str()));
 		}
 		else 
 		{
 			invoice_array.push_back(tmp);
-			FileManager::saveToFolder("Validni", "racun" + invoice_count + ".txt", getStringFromFile(paths[i].c_str()));
+			FileManager::saveToFolder("Validni", "racun" + invoice_count + ".txt", FileManager::getStringFromFile(paths[i].c_str()));
 		}
 		std::cout << Message::getMessage(message) << std::endl;
 	}
@@ -52,20 +52,12 @@ void InvoiceManager::scanForNewInvoices()
 		
 }
 
-/*Funkcija koja ucitava sadrzaj datoteke u obliku string-a.*/
-string InvoiceManager::getStringFromFile(const char * path) {
-	std::ifstream t(path);
-	std::stringstream buffer;
-	buffer << t.rdbuf();
-	return buffer.str() + "\n";
-}
-
 /*Funkcija koja ucitava podatak iz odgovarajuceg fajla te ga cuva u obliku Invoice-a.*/
 Invoice InvoiceManager::loadFromFile(const char * path)
 {
 	Invoice ret;
 	InvoiceParser instanca; //je li metoda pretvorena u staticku?
-	std::string str = getStringFromFile(path);
+	std::string str = FileManager::getStringFromFile(path);
     instanca.parseFromText(ret, str);
 	return ret;
 }
