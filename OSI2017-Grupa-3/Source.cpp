@@ -33,9 +33,7 @@ void main() {
 	users.addUser("Milos", "Trivundza");//тестни корисник
 	Menu::UserUI(main_manager, &users);
 
-	
-
-	FileManager::saveToFile(path+"users.txt", (users.getJSON()).dump());
+	FileManager::saveToFolder("Users","users.txt", (users.getJSON()).dump());
 
 	getchar();
 	getchar();

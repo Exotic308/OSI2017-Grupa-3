@@ -29,20 +29,22 @@ vector<Invoice> InvoiceManager::filterValid()
 void InvoiceManager::scanForNewInvoices()
 {
 	vector<string> paths = FileManager::GetPathsWithExtension("txt");
+	vector<string> paths_csv= FileManager::GetPathsWithExtension("csv");
+	for (int i = 0; i < paths_csv.size(); i++) paths.push_back(paths_csv[i]);
 	for (int i=0;i<paths.size();i++)
 	{
 		Invoice tmp = loadFromFile(paths[i].c_str());
 		std::string message = tmp.getErrors();
-		string invoice_count = ""+(0x30 + i);
+		string invoice_count=std::to_string(i+1);
 		if (!Message::isSuccess(message))
 		{ 
 			invoice_array_invalid.push_back(tmp); 
-			FileManager::saveToFolder("Invalidni", "racun"+invoice_count+".txt", getStringFromFile(paths[i].c_str()));
+			FileManager::saveToFolder("Invalidni", "racun"+invoice_count+"_error.txt", getStringFromFile(paths[i].c_str()));
 		}
 		else 
 		{
 			invoice_array.push_back(tmp);
-			FileManager::saveToFolder("Validni", "racun" + invoice_count + "_error.txt", getStringFromFile(paths[i].c_str()));
+			FileManager::saveToFolder("Validni", "racun" + invoice_count + ".txt", getStringFromFile(paths[i].c_str()));
 		}
 		std::cout << Message::getMessage(message) << std::endl;
 	}
