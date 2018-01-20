@@ -1,6 +1,7 @@
 #include "InvoiceParser.h"
 #include <sstream>
 #include "Message.h"
+#include <cctype>
 
 #define moveToArticleNameFormat5 28
 
@@ -106,10 +107,9 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 {
 	int position = 0;
 	char c;
-	string stringValue;
+	string stringValue, line=getLineOfText(position,invoiceText);
 
-	string line = getLineOfText(position, invoiceText);
-	std::stringstream stringStream(line);
+	stringstream stringStream(line);
 	stringStream >> stringValue >> invoice.buyer;/*Unosi ime kupca.*/
 
 	line = getLineOfText(position, invoiceText);/*Unosi datum.*/
@@ -137,8 +137,9 @@ string InvoiceParser::parseFormat1(Invoice &invoice, string invoiceText)
 		line = getLineOfText(position, invoiceText);
 		stringstream stringStream2(line);
 		stringStream2 >> value1 >> value2 >> c >> invoice.items[j].quantity >> c >> invoice.items[j].price >> c >> invoice.items[j].totalPrice;
-		invoice.items[j].article = value1 + " " + value2;
-	}/*Unosimo artikal po artikal.Sabiramo dva stringa*/
+		invoice.items[j].article = value1;
+		invoice.items[j].code = value2;
+	}/*Unosimo artikal po artikal.*/
 	
 	invoice.numItems = countItems;
 
@@ -181,9 +182,10 @@ string InvoiceParser::parseFormat2(Invoice &invoice, string invoiceText)
 
 	for (int i = 0; i < 5; i++)
 		getLineOfText(position, invoiceText);/*Pomjeramo se na 6ti red racuna.*/
-	stringValue = getLineOfText(position, invoiceText);/*Kupimo red sa nazivom kupca.*/
-	stringstream stringStream1(stringValue);
-	stringStream1 >> temporary >> c >> invoice.buyer;/*temporary kupi "Kupac",c kupi ":" i u buyer sacuvamo ime kupca.*/
+	
+	string line = getLineOfText(position, invoiceText);
+	stringstream stringStream(line);
+	stringStream >> stringValue >> invoice.buyer;/*Unosi ime kupca.*/
 
 	for (int i = 0; i < 3; i++)
 		getLineOfText(position, invoiceText);/*Prelazimo u red sa artiklima.*/
@@ -204,8 +206,9 @@ string InvoiceParser::parseFormat2(Invoice &invoice, string invoiceText)
 		stringValue = getLineOfText(position, invoiceText);
 		stringstream stringStream2(stringValue);
 		stringStream2 >> value1 >> value2 >> c >> invoice.items[j].quantity >> c >> invoice.items[j].price >> c >> invoice.items[j].totalPrice;
-		invoice.items[j].article = value1 + value2;
-	}/*Unosimo artikal po artikal.Sabiramo dva stringa.*/
+		invoice.items[j].article = value1;
+		invoice.items[j].code=value2;
+	}/*Unosimo artikal po artikal*/
 
 	invoice.numItems = countItems;
 
@@ -242,9 +245,9 @@ string InvoiceParser::parseFormat3(Invoice &invoice, string invoiceText)
 	getLineOfText(position, invoiceText);
 	getLineOfText(position, invoiceText);/*Kupimo dva reda i dolazimo u red gdje se nalazi kupac.*/
 
-	stringValue = getLineOfText(position, invoiceText);
-	stringstream stringStream1(stringValue);
-	stringStream1 >> stringValue >> invoice.buyer;/*Kupimo ime kupca.*/
+	string line = getLineOfText(position, invoiceText);
+	stringstream stringStream(line);
+	stringStream >> stringValue >> invoice.buyer;/*Unosi ime kupca.*/
 
 	stringValue = getLineOfText(position, invoiceText);
 	stringstream stringStream2(stringValue);
@@ -270,8 +273,9 @@ string InvoiceParser::parseFormat3(Invoice &invoice, string invoiceText)
 		stringValue = turnToGoodFormat(stringValue);
 		stringstream stringStream2(stringValue);
 		stringStream2 >> value1 >> value2 >> invoice.items[j].quantity >> invoice.items[j].price >> invoice.items[j].totalPrice;
-		invoice.items[j].article = value1 + value2;
-	}/*Unosimo artikal po artikal.Sabiramo dva stringa.*/
+		invoice.items[j].article = value1;
+		invoice.items[j].code=value2;
+	}/*Unosimo artikal po artikal.*/
 
 	invoice.numItems = countItems;
 
@@ -300,9 +304,9 @@ string InvoiceParser::parseFormat4(Invoice &invoice, string invoiceText)
 	char c;
 	string stringValue;
 
-	stringValue = getLineOfText(position, invoiceText);/*Kupimo red sa nazivom kupca.*/
-	stringstream stringStream1(stringValue);
-	stringStream1 >> stringValue >> invoice.buyer;
+	string line = getLineOfText(position, invoiceText);
+	stringstream stringStream(line);
+	stringStream >> stringValue >> invoice.buyer;/*Unosi ime kupca.*/
 
 	stringValue = getLineOfText(position, invoiceText);/*Kupimo red sa datumom.*/
 	stringstream stringStream2(stringValue);
@@ -328,8 +332,9 @@ string InvoiceParser::parseFormat4(Invoice &invoice, string invoiceText)
 		stringValue = getLineOfText(position, invoiceText);
 		stringstream stringStream3(stringValue);
 		stringStream3 >> value1 >> value2 >> c >> invoice.items[j].quantity >> c >> invoice.items[j].price >> c >> invoice.items[j].totalPrice;
-		invoice.items[j].article = value1 + value2;
-	}/*Unosimo artikal po artikal.Sabiramo dva stringa.*/
+		invoice.items[j].article = value1;
+		invoice.items[j].code=value2;
+	}/*Unosimo artikal po artikal.*/
 
 	stringValue = getLineOfText(position, invoiceText);
 	stringValue = getLineOfText(position, invoiceText);/*Sklanjamo red crtica,i uzimamo red cijene i ucitavamo je.*/
@@ -356,13 +361,19 @@ string InvoiceParser::parseFormat4(Invoice &invoice, string invoiceText)
 string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText)
 {
 	string stringValue;
-	int position = moveToArticleNameFormat5;/*Pozicioniramo se na prvi naziv artikla.*/
+	int position = moveToArticleNameFormat5;
+	position++;//sklanjamo \n
 	invoice.numItems = getNumberOfItemsFormat5(invoiceText);/*Ovdje mozemo dodati da ispisuje koja je greska,jer u suprotnom metoda vraca samo 0.*/
 	invoice.items = new InvoiceItem[invoice.numItems];/*Brojimo artikle i alociramo dovoljno prostora.*/
 
-	for (int i = 0; i < invoice.numItems; i++)
+	for (int i = 0; i < invoice.numItems; i++,position++)
 	{
-		invoice.items[i].article = getStringUntilComma(position, invoiceText);/*Kupimo naziv do zapete.*/
+		int j = 0;
+		string tempLine = getStringUntilComma(position, invoiceText);/*Kupimo naziv do zapete.*/
+		while (std::isalpha(tempLine[j]))
+			invoice.items[i].article.push_back(tempLine[j++]);
+		while (std::isdigit(tempLine[j]))
+			invoice.items[i].code.push_back(tempLine[j++]);
 		position++;/*Pomjeramo se sa zapete.*/
 
 		string quantityString, priceString, totalPriceString;

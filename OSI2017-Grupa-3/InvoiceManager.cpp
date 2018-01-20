@@ -30,7 +30,8 @@ void InvoiceManager::scanForNewInvoices()
 {
 	vector<string> paths = FileManager::GetPathsWithExtension("txt");
 	vector<string> paths_csv= FileManager::GetPathsWithExtension("csv");
-	for (int i = 0; i < paths_csv.size(); i++) paths.push_back(paths_csv[i]);
+	for (int i = 0; i < paths_csv.size(); i++)
+		paths.push_back(paths_csv[i]);
 	for (int i=0;i<paths.size();i++)
 	{
 		Invoice tmp = loadFromFile(paths[i].c_str());
@@ -46,7 +47,6 @@ void InvoiceManager::scanForNewInvoices()
 			invoice_array.push_back(tmp);
 			FileManager::saveToFolder("Validni", "racun" + invoice_count + ".txt", FileManager::getStringFromFile(paths[i].c_str()));
 		}
-		std::cout << Message::getMessage(message) << std::endl;
 	}
 	
 		

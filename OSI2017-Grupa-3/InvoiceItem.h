@@ -6,10 +6,10 @@ using std::string;
 class InvoiceItem
 {
 public:
-	string article;
+	string article,code;
 	float price, quantity, totalPrice;
 	static float currencyCoefficient;
-	InvoiceItem(string= "", float = 0, float = 0, float = 0);
+	InvoiceItem(string= "",string="" , float = 0, float = 0, float = 0);
 	float getTotalPrice();
 	string hasErrors();
 	friend std::ostream& operator<<(std::ostream&, const InvoiceItem&);
