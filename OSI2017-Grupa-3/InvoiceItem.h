@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <iostream>
 #include <string>
 using std::string;
 
@@ -11,6 +12,6 @@ public:
 	InvoiceItem(string= "", float = 0, float = 0, float = 0);
 	float getTotalPrice();
 	string hasErrors();
-	void print();
+	friend std::ostream& operator<<(std::ostream&, const InvoiceItem&);
 	bool operator==(InvoiceItem&);
 };

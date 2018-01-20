@@ -1,8 +1,6 @@
 #include "Invoice.h"
 #include "Message.h"
 #define ATOI 0x30
-using std::cout;
-using std::endl;
 
 Invoice::Invoice(int numItems, float price, float PDV, float totalPrice, string buyer, string date) :
 	numItems(numItems), price(price),
@@ -15,7 +13,7 @@ Invoice::Invoice(int numItems, float price, float PDV, float totalPrice, string 
 float Invoice::getPrice()
 {
 	float sum = 0;
-	for (int i = 0; i < numItems; sum += items[i].getTotalPrice(), i++);
+	for (int i = 0; i < numItems; sum += items[i].totalPrice, i++);
 	return sum;
 }
 
@@ -44,22 +42,6 @@ string Invoice::getErrors()
 	if (getPrice() != price || totalPrice != price + PDV)
 		return "0Neuskladjena totalna cijena posebnih proizvoda sa totalnom cijenom na racunu.";
 	return "1Ispravan racun.";
-}
-
-/*Funkcija koja sluzi za ispis podataka na standardni izlaz.*/
-void Invoice::print() {
-	cout << "Kupac: "<< buyer << endl;
-	cout << "Datum: " << date << endl<<endl;
-	cout << "Itemi" << endl;
-	for (int i = 0; i < numItems; ++i) {
-		cout << i << ". ";
-		items[i].print();
-	}
-	cout << endl;
-	cout << "Izracunata cijena: " << totalPrice<< endl;
-	cout << "Izracunat PDV:" << PDV << endl;
-	cout << "Izracunata cijena+PDV: " << totalPrice + PDV << endl;
-	cout << "Erori: " << Message::getMessage(getErrors()) << endl;
 }
 
 /*Staticka metoda za provjeru ispravnosti formata datuma.*/
@@ -109,4 +91,20 @@ bool Invoice::operator==(Invoice &other)
 		return true;
 	}
 	return false;
+}
+
+std::ostream & operator<<(std::ostream& output, const Invoice& bill)
+{
+	output << "Kupac: " << bill.buyer << std::endl;
+	output << "Datum: " << bill.date << std::endl << std::endl;
+	output << "Proizvodi" << std::endl;
+
+	for (int i = 0; i < bill.numItems; ++i)
+		output << i << ". " << bill.items[i] << std::endl;
+
+	output << std::endl<< "Ukupna cijena: " << bill.totalPrice << std::endl;
+	output << "PDV:" << bill.PDV << std::endl;
+	output << "Cijena + PDV: " << bill.totalPrice + bill.PDV << std::endl;
+
+	return output;
 }

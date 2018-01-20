@@ -14,7 +14,7 @@ public:
 	Invoice(int = 0, float = 0.0, float = 0.0, float = 0.0, string = "", string = "");
 	
 	string getErrors();
-	void print();
+	friend std::ostream& operator<<(std::ostream&, const Invoice&);
 	static bool properDateFormat(string);
 	bool operator==(Invoice&);
 };
