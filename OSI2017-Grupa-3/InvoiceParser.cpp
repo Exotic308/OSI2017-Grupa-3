@@ -392,7 +392,7 @@ string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText,string f
 	while (fileName[iter] != '#')
 		invoice.buyer.push_back(fileName[iter++]);
 	iter++;
-	while (iter < fileName.size() - 1)
+	while (iter < fileName.size() - 4)
 		invoice.date.push_back(fileName[iter++]);
 
 	invoice.price = invoice.totalPrice = 0;

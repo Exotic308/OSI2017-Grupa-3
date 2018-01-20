@@ -1,6 +1,7 @@
 #include "Invoice.h"
 #include "Message.h"
 #define ATOI 0x30
+#define EPS 0.1
 
 Invoice::Invoice(int numItems, float price, float PDV, float totalPrice, string buyer, string date) :
 	numItems(numItems), price(price),
@@ -35,11 +36,11 @@ string Invoice::getErrors()
 			return Message::getMessage(items[i].hasErrors());
 
 	float p = getPrice(); 
-	if (PDV != (price*0.17f))
+	if (std::abs(PDV - (price*0.17f))>EPS)
 		return "0PDV nije pravilno izracunat";
 	if (PDV < 0)
 		return "0PDV ne moze imati negativnu vrijednost.";
-	if (getPrice() != price || totalPrice != price + PDV)
+	if (std::abs(getPrice()-price)>EPS || std::abs(totalPrice - (price + PDV))>EPS)
 		return "0Neuskladjena totalna cijena posebnih proizvoda sa totalnom cijenom na racunu.";
 	return "1Ispravan racun.";
 }
@@ -54,6 +55,9 @@ bool Invoice::properDateFormat(string date)
 	int day = (date[0] - ATOI) * 10 + date[1] - ATOI;
 	int month = (date[3] - ATOI) * 10 + date[4] - ATOI;
 	int year = ((date[6] - ATOI) * 1000) + ((date[7] - ATOI) * 100) + ((date[8] - ATOI) * 10) + date[9] - ATOI;
+
+	if (month < 1 || month>12)
+		return false;
 
 	//Klasicna provjera validnosti datuma.
 	switch (month)
