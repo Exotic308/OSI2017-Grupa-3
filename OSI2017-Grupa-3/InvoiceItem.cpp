@@ -5,6 +5,7 @@
 
 std::string coef = FileManager::getStringFromFile((FileManager::getexepath() + "Valuta\\valuta.txt").c_str());
 float InvoiceItem::currencyCoefficient = (float)atof(coef.c_str());
+
 InvoiceItem::InvoiceItem(string article, float price, float quantity, float totalPrice):
 	article(article), price(price), quantity(quantity), totalPrice(totalPrice) {};
 
@@ -31,9 +32,9 @@ string InvoiceItem::hasErrors()
 std::ostream& operator<<(std::ostream& output, const InvoiceItem& product)
 {
 	output << "Artikal: " << product.article << std::endl;
-	output << "Cijena: " << product.price << std::endl;
-	output << "Kolicina: " << product.quantity << std::endl;
-	output << "Ukupna cijena: " << product.totalPrice << std::endl;
+	output << "Cijena: " << product.price * InvoiceItem::currencyCoefficient << std::endl;
+	output << "Kolicina: " << product.quantity * InvoiceItem::currencyCoefficient << std::endl;
+	output << "Ukupna cijena: " << product.totalPrice * InvoiceItem::currencyCoefficient << std::endl;
 	return output;
 }
 

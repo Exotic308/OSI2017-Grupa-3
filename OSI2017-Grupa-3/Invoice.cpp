@@ -102,9 +102,9 @@ std::ostream & operator<<(std::ostream& output, const Invoice& bill)
 	for (int i = 0; i < bill.numItems; ++i)
 		output << i+1 << ". " << bill.items[i] << std::endl;
 
-	output << std::endl<< "Cijena bez PDV-a: " << bill.price << std::endl;
-	output << "PDV:" << bill.PDV << std::endl;
-	output << "Cijena + PDV: " << bill.totalPrice << std::endl;
+	output << std::endl<< "Cijena bez PDV-a: " << bill.price * InvoiceItem::currencyCoefficient << std::endl;
+	output << "PDV:" << bill.PDV * InvoiceItem::currencyCoefficient << std::endl;//Pretpostavka je da su sve valute imaj isti PDV
+	output << "Cijena + PDV: " << bill.totalPrice * InvoiceItem::currencyCoefficient << std::endl;
 
 	return output;
 }
