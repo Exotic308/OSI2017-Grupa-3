@@ -35,21 +35,22 @@ void InvoiceManager::scanForNewInvoices()
 	for (int i=0;i<paths.size();i++)
 	{
 		Invoice tmp = loadFromFile(paths[i].c_str());
-		std::string message = tmp.getErrors();
-		string invoice_count=std::to_string(i+1);
-		if (!Message::isSuccess(message))
-		{ 
-			invoice_array_invalid.push_back(tmp); 
-			FileManager::saveToFolder("Invalidni", "racun"+invoice_count+"_error.txt", FileManager::getStringFromFile(paths[i].c_str()));
-		}
-		else 
+		if (!alreadyExists(tmp)) 
 		{
-			invoice_array.push_back(tmp);
-			FileManager::saveToFolder("Validni", "racun" + invoice_count + ".txt", FileManager::getStringFromFile(paths[i].c_str()));
+			std::string message = tmp.getErrors();
+			string invoice_count = std::to_string(i + 1);
+			if (!Message::isSuccess(message))
+			{
+				invoice_array_invalid.push_back(tmp);
+				FileManager::saveToFolder("Invalidni", "racun" + invoice_count + "_error.txt", FileManager::getStringFromFile(paths[i].c_str()));
+			}
+			else
+			{
+				invoice_array.push_back(tmp);
+				FileManager::saveToFolder("Validni", "racun" + invoice_count + ".txt", FileManager::getStringFromFile(paths[i].c_str()));
+			}
 		}
 	}
-	
-		
 }
 
 /*Funkcija koja ucitava podatak iz odgovarajuceg fajla te ga cuva u obliku Invoice-a.*/

@@ -66,7 +66,6 @@ std::string FileManager::getStringFromFile(const char * path) {
 
 std::string FileManager::SplitFilename(std::string str)
 {
-	std::cout << "Splitting: " << str << '\n';
 	std::size_t found = str.find_last_of("/\\");
 	std::string ret = str.substr(found + 1);
 	return ret;
