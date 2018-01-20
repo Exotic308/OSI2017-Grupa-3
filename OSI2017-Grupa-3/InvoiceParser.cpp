@@ -385,7 +385,7 @@ string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText)
 	for (int i = 0; i < invoice.numItems; i++)
 		invoice.price += invoice.items[i].totalPrice;
 
-	invoice.PDV = invoice.price*0.17;
+	invoice.PDV = invoice.price*0.17f;
 	invoice.totalPrice = invoice.PDV+invoice.price;
 
 	string errors = invoice.getErrors();

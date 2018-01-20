@@ -19,13 +19,11 @@ void Menu::UserUI(InvoiceManager &main_manager, Users *users)
 		int option;
 		if (user.isAdmin()) Menu::adminOptions(*users);
 		else
-		{//MILOS LUKIC TO FIX THIS SO IT DOESNT HAVE BREAK
+		{
 			if (main_manager.invoice_array.size() == 0)
-			{
 				std::cout << "Nemoguce koristiti opcije za analiticara jer nije ucitan nijedan racun.";
-				break;//PLS NO BREAK VATAFAK
-			}
-			Menu::analystOptions(&main_manager.invoice_array[0]);
+			else
+				Menu::analystOptions(&main_manager.invoice_array[0]);
 		}
 
 		std::cout << std::endl << "Unesite 1 za novo pokretanje programa ili bilo koji karakter za kraj rada..." << std::endl;
@@ -68,8 +66,12 @@ void Menu::adminOptions(Users &users)
 	std::cin >> options;
 	if (options == 1)
 	  adminUserControl(users);//rad sa korisnickim nalozima(poziv druge metode)
-	else if (options == 2);
-	//rad sa valutom - trenutno nezavrsen dio
+	else if (options == 2)
+	{
+		std::cout << "Unesite novi koeficijent PDV-a:" << std::endl;
+		std::cin >> InvoiceItem::currencyCoefficient;
+		FileManager::saveToFolder("Valuta", "valuta.txt", std::to_string(InvoiceItem::currencyCoefficient));
+	}
 	std::cout << std::endl << "Zavrsili ste sa koristenjem administratorovih opcija."<<std::endl;
 }
 
@@ -137,8 +139,10 @@ void Menu::adminUserControl(Users &users)
 		std::cout << std::endl << "Unesite prezime:";
 		std::cin >> surname;
 		message=users.addUser(name, surname); 
-		if (message[0] == '1') std::cout << std::endl << "Uspjesno ste dodali novog korisnika.";
-		else std::cout << std::endl << Message::getMessage(message);
+		if (Message::isSuccess(message)) 
+			std::cout << std::endl << "Uspjesno ste dodali novog korisnika.";
+		else 
+			std::cout << std::endl << Message::getMessage(message);
 	}
 	else if (options == 2)//brisanje korisnika
 	{

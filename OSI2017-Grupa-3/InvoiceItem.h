@@ -8,7 +8,7 @@ class InvoiceItem
 public:
 	string article;
 	float price, quantity, totalPrice;
-
+	static float currencyCoefficient;
 	InvoiceItem(string= "", float = 0, float = 0, float = 0);
 	float getTotalPrice();
 	string hasErrors();
