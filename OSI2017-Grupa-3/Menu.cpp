@@ -21,12 +21,14 @@ void Menu::UserUI(InvoiceManager &main_manager, Users *users)
 		else
 		{
 			if (main_manager.invoice_array.size() == 0)
-				std::cout << "Nemoguce koristiti opcije za analiticara jer nije ucitan nijedan racun.";
+				std::cout << "Nije moguce koristiti opcije za analiticara jer nije ucitan nijedan racun.";
 			else
 				Menu::analystOptions(&main_manager.invoice_array[0]);
 		}
 
-		std::cout << std::endl << "Unesite 1 za novo pokretanje programa ili bilo koji karakter za kraj rada..." << std::endl;
+		std::cout << std::endl << "Izaberite opciju:" << std::endl;
+		std::cout << "[1] Povratak na opcije." << std::endl;
+		std::cout << "[2] Izlazak iz programa." << std::endl;
 		std::cin >> option;
 		if (option == 1) control = false;
 		else control = true;
@@ -36,11 +38,13 @@ void Menu::UserUI(InvoiceManager &main_manager, Users *users)
 //Metoda za prijavu korisnika
 bool Menu::requestLogin(Users& users, User &user)
 {
-	std::cout << std::endl << "PRIJAVA:" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
+	std::cout << "|                                     PRIJAVA                                         |" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
 	std::string pin, name, result;
 	std::cout << "Unesite korisnicko ime:";
 	std::cin >> name;
-	std::cout << std::endl << "Unesite sifru:";
+	std::cout << std::endl << "Unesite PIN:";
 	std::cin >> pin;
 
 	result = users.loginUser(name, pin, user);//prijava korisnika(vraca odgovarajucu poruku)
@@ -58,17 +62,21 @@ bool Menu::requestLogin(Users& users, User &user)
 void Menu::adminOptions(Users &users)
 {
 	int options;
-	std::cout << "=====================================================================================" << std::endl;
-    std::cout << "Unesite 1 za opciju upravljanja korisnickim nalozima." << std::endl;
-	std::cout << "Unesite 2 za opciju podesavanja valute." << std::endl;
-	std::cout << "Unesite bilo koji karakter za izlaz iz opcija za administratora." << std::endl;
-	std::cout << "=====================================================================================" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
+    std::cout << "|                           UNESITE REDNI BROJ OPCIJE:                                |" << std::endl;
+	std::cout << "|                                                                                     |" << std::endl;
+	std::cout << "|[1] Upravljanje korisnickim nalozima                                                 |" << std::endl;
+	std::cout << "|[2] Podesavanje valute.                                                              |" << std::endl;
+	std::cout << "|                                                                                     |" << std::endl;
+	std::cout << "|[0] Izlaz iz administratorskih opcija.                                               |" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
 	std::cin >> options;
+	system("CLS");
 	if (options == 1)
 	  adminUserControl(users);//rad sa korisnickim nalozima(poziv druge metode)
 	else if (options == 2)
 	{
-		std::cout << "Unesite novi koeficijent PDV-a:" << std::endl;
+		std::cout << "Unesite novi koeficijent valute u odnosu na konvertibilnu marku (BAM):" << std::endl;
 		std::cin >> InvoiceItem::currencyCoefficient;
 		FileManager::saveToFolder("Valuta", "valuta.txt", std::to_string(InvoiceItem::currencyCoefficient));
 	}
@@ -79,13 +87,17 @@ void Menu::adminOptions(Users &users)
 void Menu::analystOptions(Invoice *invoices)
 {
 	int options;
-	std::cout << "==================================================================================" << std::endl;
-	std::cout << "Unesite 1 za opciju pregleda racuna za odredjenog kupca." << std::endl;
-	std::cout << "Unesite 2 za opciju pregleda racuna za odredjeni mjesec." << std::endl;
-	std::cout << "Unesite 3 za opciju pregleda racuna za odredjeni proizvod." << std::endl;
-	std::cout << "Unesite bilo koji karakter za izlaz iz opcija za analiticara." << std::endl;
-	std::cout << "==================================================================================" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
+	std::cout << "|                           UNESITE REDNI BROJ OPCIJE:                                |" << std::endl;
+	std::cout << "|                                                                                     |" << std::endl;
+	std::cout << "|[1] Pregled racuna za odredjenog kupca                                               |" << std::endl;
+	std::cout << "|[2] Pregled racuna za odredjeni mjesec                                               |" << std::endl;
+	std::cout << "|[3] Pregled racuna za odredjeni proizvod                                             |" << std::endl;
+	std::cout << "|                                                                                     |" << std::endl;
+	std::cout << "|[0] Izlaz iz opcija analiticara                                                      |" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
 	std::cin >> options;
+	system("CLS");
 	if (options == 1)
 	{
 		std::string buyer;
@@ -125,18 +137,22 @@ void Menu::analystOptions(Invoice *invoices)
 void Menu::adminUserControl(Users &users)
 {
 	int options;
-	std::cout << "==================================================================================" << std::endl;
-	std::cout << "Unesite 1 za opciju dodavanja korisnika." << std::endl;
-	std::cout << "Unesite 2 za opciju brisanja korisnika." << std::endl;
-	std::cout << "Unesite bilo koji karakter za izlaz iz opcija za upravljanje korisnickim nalozima." << std::endl;
-	std::cout << "==================================================================================" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
+	std::cout << "|                           UNESITE REDNI BROJ OPCIJE:                                |" << std::endl;
+	std::cout << "|                                                                                     |" << std::endl;
+	std::cout << "|[1] Dodavanje korisnika                                                              |" << std::endl;
+	std::cout << "|[2] Brisanje korisnika                                                               |" << std::endl;
+	std::cout << "|                                                                                     |" << std::endl;
+	std::cout << "|[0] Izlaz iz administratorskih opcija.                                               |" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
 	std::cin >> options;
+	system("CLS");
 	if (options == 1)//dodavanje novog korisnika
 	{
 		std::string name, surname, pin,message;
 		std::cout << std::endl << "Unesite ime:";
 		std::cin >> name;
-		std::cout << std::endl << "Unesite prezime:";
+		std::cout << "Unesite prezime:";
 		std::cin >> surname;
 		message=users.addUser(name, surname); 
 		if (Message::isSuccess(message)) 

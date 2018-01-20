@@ -26,14 +26,22 @@ Users::Users()
 std::string Users::addUser(std::string name, std::string surname)
 {
 	std::string username = "";
+	int userType;
+	std::cout <<std::endl<< " =====================================================================================" << std::endl;
+	std::cout << "|                           UNESITE REDNI BROJ OPCIJE:                                |" << std::endl;
+	std::cout << "|                                                                                     |" << std::endl;
+	std::cout << "|[0] Unos analiticara                                                                 |" << std::endl;
+	std::cout << "|[1] Unos administratora                                                              |" << std::endl;
+	std::cout << "|                                                                                     |" << std::endl;
+	std::cout << " =====================================================================================" << std::endl;
+	do {
+		std::cin >> userType;
+	} while (userType != 0 && userType != 1);
+	system("CLS");
 	std::cout << "Unesite korisnicko ime: ";
 	std::cin >> username;
 	if (!userAlreadyExists(username)) {
-		int userType, ctrl;
-		std::cout << "Unos administratora [1]" << std::endl << "Unos analiticara [0]" << std::endl;
-		do {
-			std::cin >> userType;
-		} while (userType != 0 && userType != 1);
+		int ctrl;
 		User temp;
 		do {
 			ctrl = 0;
