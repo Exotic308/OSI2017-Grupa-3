@@ -45,8 +45,8 @@ string InvoiceParser::detectFormat(string invoiceText)
 	for (int i = 0; (i < 6)&&(i<(stringValue.length()-1)); i++)
 		temporary.push_back(stringValue[i]);/*Pokusa da pokupi "Kupac:" .*/
 	
-	for (int i = 0; i < 28 && i < stringValue.length(); i++)
-		temporary1.push_back(stringValue[i]);/*Pokusa da pokupi 5. format.*/
+	for (int i = 0; i < 28 && i < invoiceText.length(); i++)
+		temporary1.push_back(invoiceText[i]);/*Pokusa da pokupi 5. format.*/
 
 	if (temporary.compare("Kupac:") == 0)/*Format 1 ili 4.*/
 	{
@@ -55,8 +55,7 @@ string InvoiceParser::detectFormat(string invoiceText)
 
 		if (stringValue.compare("Datum:") == 0)
 		{
-			if (invoiceText[position++] == '\n')
-			{
+				stringstream stringstreamx(getLineOfText(position, invoiceText));
 				stringstream stringStream3(getLineOfText(position, invoiceText));
 				stringStream3 >> stringValue;
 
@@ -66,9 +65,6 @@ string InvoiceParser::detectFormat(string invoiceText)
 					return "4";/*Detektovan format 4.*/
 				else
 					return "Neprepoznatljiv format(greska u trecem redu).";
-			}
-			else
-				return "Neprepoznatljiv format(greska u drugom redu).";
 		}
 		else
 			return "Neprepoznatljiv format(greska u prvom redu).";
@@ -412,7 +408,7 @@ int InvoiceParser::moveRows(int rows, int position, string inputText)
 string InvoiceParser::getLineOfText(int& position, string inputText)
 {
 	string result;
-	for (position; inputText[position] != '\n'&&(position<(inputText.length()-1)); position++)
+	for (position; inputText[position] != '\n'&&(position<(inputText.length()-1)&&(inputText[position]!=EOF)); position++)
 		result.push_back(inputText[position]);
 	position++;
 	return result;
