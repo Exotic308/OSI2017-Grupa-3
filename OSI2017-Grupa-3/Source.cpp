@@ -13,6 +13,7 @@ void main() {
 	std::cout << "Pocetni portal projektnog zadatka OSI2017-Grupa-3" << std::endl;
 
 	//Тестирање уноса рачуна
+	
 	std::string path = FileManager::getexepath();
 	std::cout << path << std::endl;
 	InvoiceManager main_manager; Users users;
@@ -28,12 +29,11 @@ void main() {
 		std::cout << main_manager.invoice_array.size();
 		std::cout << main_manager.invoice_array_invalid.size();
 	}
+
 	
-
 	users.addUser("Milos", "Trivundza");//тестни корисник
+	FileManager::saveToFolder("Users", "users.txt", (users.getJSON()).dump());
 	Menu::UserUI(main_manager, &users);
-
-	FileManager::saveToFolder("Users","users.txt", (users.getJSON()).dump());
 
 	getchar();
 	getchar();
