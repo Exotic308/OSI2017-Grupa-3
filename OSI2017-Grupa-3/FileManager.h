@@ -12,4 +12,5 @@ public:
 	static std::vector<std::string> GetPathsWithExtension(std::string ext, std::string relativePath = ""); 
 	static bool saveToFolder(std::string, std::string, std::string);
 	static std::string getStringFromFile(const char * path);
+	static std::string SplitFilename(std::string);
 };
