@@ -20,6 +20,7 @@ void Menu::UserUI(InvoiceManager &main_manager, Users *users)
 		if (user.isAdmin()) Menu::adminOptions(*users);
 		else
 		{
+			main_manager.scanForNewInvoices();
 			if (main_manager.invoice_array.size() == 0)
 				std::cout << "Nije moguce koristiti opcije za analiticara jer nije ucitan nijedan racun.";
 			else
