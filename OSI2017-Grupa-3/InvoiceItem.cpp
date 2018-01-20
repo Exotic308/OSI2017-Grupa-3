@@ -27,15 +27,15 @@ string InvoiceItem::hasErrors()
 		return "1Pravilan oblik racuna, unos je moguc";
 }
 
-/*Metoda za ispis osobina proizvoda.*/
-void InvoiceItem::print() {
-	cout << "Artikal: " << article << endl;
-	cout << "Cijena: " << price << endl;
-	cout << "Kolicina: " << quantity << endl;
-	cout << "Ukupna cijena: " << totalPrice << endl;
-	cout << "Izracunata cijena: " << getTotalPrice() << endl;
-	cout << "Erori: " << Message::getMessage(hasErrors()) << endl;
+std::ostream& operator<<(std::ostream& output, const InvoiceItem& product)
+{
+	output << "Artikal: " << product.article << endl;
+	output << "Cijena: " << product.price << endl;
+	output << "Kolicina: " << product.quantity << endl;
+	output << "Ukupna cijena: " << product.totalPrice << endl;
+	return output;
 }
+
 
 /*Preklopljen operator poredjivanja jednakosti dva elementa.*/
 bool InvoiceItem::operator==(InvoiceItem &other)
@@ -45,3 +45,4 @@ bool InvoiceItem::operator==(InvoiceItem &other)
 		return true;
 	return false;
 }
+
