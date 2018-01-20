@@ -18,12 +18,12 @@ void main() {
 	InvoiceManager main_manager; Users users;
 	std::cout << "\nBroj ucitanih racuna je " << main_manager.invoice_array.size() << "\n";
 	for (int i = 0; i < main_manager.invoice_array.size(); ++i) {
-		main_manager.invoice_array[i].print();
+		std::cout << main_manager.invoice_array[i];
 		std::cout<< std::endl << "================\n";
 	}
 	std::cout << "ERORI\n";
 	for (int i = 0; i < main_manager.invoice_array_invalid.size(); ++i) {
-		main_manager.invoice_array_invalid[i].print();
+		std::cout << main_manager.invoice_array_invalid[i];
 		std::cout << std::endl << "================\n";
 		std::cout << main_manager.invoice_array.size();
 		std::cout << main_manager.invoice_array_invalid.size();
