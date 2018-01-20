@@ -5,7 +5,7 @@
 class InvoiceParser
 {
 public:
-	string parseFromText(Invoice &, string);
+	string parseFromText(Invoice &, string,string);
 	static const string racun1;
 	static const string racun2;
 	static const string racun3;
@@ -18,7 +18,7 @@ private:
 	string parseFormat2(Invoice&, string);
 	string parseFormat3(Invoice&, string);
 	string parseFormat4(Invoice&, string);
-	string parseFormat5(Invoice&, string);
+	string parseFormat5(Invoice&, string,string);
 
 	int moveRows(int, int, string);
 	string getLineOfText(int&, string);

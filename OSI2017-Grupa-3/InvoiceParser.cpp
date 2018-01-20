@@ -8,7 +8,7 @@
 using std::stringstream;
 
 /*Metode koja prima string (racun ucitan u obliku stringa) i iz njega "izvlaci" podatke i smjesta u klasu invoice.*/
-string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
+string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText,string fileName)
 {
 	int format = -1;
 	string succes = detectFormat(invoiceText);
@@ -26,7 +26,7 @@ string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText)
 		case 2: return parseFormat2(invoice, invoiceText);
 		case 3: return parseFormat3(invoice, invoiceText);
 		case 4: return parseFormat4(invoice, invoiceText);
-		case 5: return parseFormat5(invoice, invoiceText);
+		case 5: return parseFormat5(invoice, invoiceText,fileName);
 		default: return "0Format racuna nije validan.";
 		}
 	}
@@ -358,7 +358,7 @@ string InvoiceParser::parseFormat4(Invoice &invoice, string invoiceText)
 }
 
 /*Metoda koja izvlaci informacije iz formata racuna broj 5 i smjesta ih u strukturu invoice.*/
-string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText)
+string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText,string fileName)
 {
 	string stringValue;
 	int position = moveToArticleNameFormat5;
@@ -387,9 +387,12 @@ string InvoiceParser::parseFormat5(Invoice &invoice, string invoiceText)
 		invoice.items[i].price = std::stof(priceString, nullptr);
 		invoice.items[i].totalPrice = std::stof(totalPriceString, nullptr);/*Konvertujemo iz stringa u float.*/
 	}
-
-	invoice.buyer = "default";
-	invoice.date = "11/9/2000 ";
+	int iter = 0;
+	while (fileName[iter] != '#')
+		invoice.buyer.push_back(fileName[iter++]);
+	iter++;
+	while (iter < fileName.size() - 1)
+		invoice.date.push_back(fileName[iter++]);
 
 	invoice.price = invoice.totalPrice = 0;
 
