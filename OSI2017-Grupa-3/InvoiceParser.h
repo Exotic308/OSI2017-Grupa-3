@@ -5,7 +5,8 @@
 class InvoiceParser
 {
 public:
-	string parseFromText(Invoice &, string,string);
+	
+	string parseFromText(Invoice &, string, string);
 	static const string racun1;
 	static const string racun2;
 	static const string racun3;
@@ -27,5 +28,7 @@ private:
 	int getNumberOfItemsFormat5(string);
 	string turnToGoodFormat(string);
 	string getStringOfNumbersUntilLetter(int&, string);
+
+	void FormatParserNo5(std::string&); //izbacuje "Kupac"
 };
 

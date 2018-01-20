@@ -58,7 +58,8 @@ Invoice InvoiceManager::loadFromFile(const char * path)
 	Invoice ret;
 	InvoiceParser instanca; //je li metoda pretvorena u staticku?
 	std::string str = FileManager::getStringFromFile(path);
-    instanca.parseFromText(ret, str);
+	std::string filename = FileManager::SplitFilename(path);
+    instanca.parseFromText(ret, str, filename);
 	return ret;
 }
 

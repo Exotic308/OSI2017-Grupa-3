@@ -35,6 +35,7 @@ string InvoiceParser::parseFromText(Invoice &invoice, string invoiceText,string 
 		return "0Neocekivana greska.";
 	}/*Osiguranje od run-time gresaka.*/
 }
+
 /*Metoda koja detektuje koji od formata racuna je u pitanju.*/
 string InvoiceParser::detectFormat(string invoiceText)
 {
@@ -469,6 +470,11 @@ string InvoiceParser::getStringOfNumbersUntilLetter(int &position, string inputT
 	for (position; ((inputText.size()) != position) && (((inputText[position] >= 0x30) && (inputText[position] <= 0x39)) || (inputText[position] == '.')); position++)
 		result.push_back(inputText[position]);
 	return result;
+}
+
+void InvoiceParser::FormatParserNo5(std::string &str)
+{
+	str = str.substr(5, str.length());
 }
 
 
