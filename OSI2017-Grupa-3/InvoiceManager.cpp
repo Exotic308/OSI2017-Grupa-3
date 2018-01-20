@@ -24,18 +24,30 @@ vector<Invoice> InvoiceManager::filterValid()
 	return ret;
 }
 
+
 /*Funkcija za skeniranje novih racuna u okruzenju aplikacije.*/
 void InvoiceManager::scanForNewInvoices()
 {
-	string exepath = FileManager::getexepath();
 	vector<string> paths = FileManager::GetPathsWithExtension("txt");
 	for (int i=0;i<paths.size();i++)
 	{
 		Invoice tmp = loadFromFile(paths[i].c_str());
-		/*if (!alreadyExists(tmp) && Message::isSuccess(tmp.getErrors()))
-			std::cout << Message::getMessage(tmp.getErrors());*/
-		invoice_array.push_back(tmp);
+		std::string message = tmp.getErrors();
+		string invoice_count = ""+(0x30 + i);
+		if (!Message::isSuccess(message))
+		{ 
+			invoice_array_invalid.push_back(tmp); 
+			FileManager::saveToFolder("Invalidni", "racun"+invoice_count+".txt", getStringFromFile(paths[i].c_str()));
+		}
+		else 
+		{
+			invoice_array.push_back(tmp);
+			FileManager::saveToFolder("Validni", "racun" + invoice_count + "_error.txt", getStringFromFile(paths[i].c_str()));
+		}
+		std::cout << Message::getMessage(message) << std::endl;
 	}
+	
+		
 }
 
 /*Funkcija koja ucitava sadrzaj datoteke u obliku string-a.*/
