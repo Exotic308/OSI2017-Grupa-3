@@ -3,7 +3,7 @@
 #include "InvoiceManager.h"
 #include <iostream>
 
-std::string coef = InvoiceManager::getStringFromFile((FileManager::getexepath() + "Valuta\\valuta.txt").c_str());
+std::string coef = FileManager::getStringFromFile((FileManager::getexepath() + "Valuta\\valuta.txt").c_str());
 float InvoiceItem::currencyCoefficient = (float)atof(coef.c_str());
 InvoiceItem::InvoiceItem(string article, float price, float quantity, float totalPrice):
 	article(article), price(price), quantity(quantity), totalPrice(totalPrice) {};
