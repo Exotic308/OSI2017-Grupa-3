@@ -43,6 +43,8 @@ void InvoiceManager::scanForNewInvoices()
 			{
 				invoice_array_invalid.push_back(tmp);
 				FileManager::saveToFolder("Invalidni", "racun" + invoice_count + "_error.txt", FileManager::getStringFromFile(paths[i].c_str()));
+				std::cout << "Greska u racunu: " << tmp.buyer << " " << tmp.date << std::endl;
+				std::cout << Message::getMessage(tmp.getErrors()) << std::endl;
 			}
 			else
 			{

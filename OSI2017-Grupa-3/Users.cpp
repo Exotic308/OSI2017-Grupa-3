@@ -35,7 +35,13 @@ std::string Users::addUser(std::string name, std::string surname)
 	std::cout << "|                                                                                     |" << std::endl;
 	std::cout << " =====================================================================================" << std::endl;
 	do {
-		std::cin >> userType;
+		while (!(std::cin >> userType)) {		//Onemogucavanje unosa pogresnog tipa
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		if (userType != 0 && userType != 1)
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
 	} while (userType != 0 && userType != 1);
 	system("CLS");
 	std::cout << "Unesite korisnicko ime: ";

@@ -30,7 +30,11 @@ void Menu::UserUI(InvoiceManager &main_manager, Users *users)
 		std::cout << std::endl << "Izaberite opciju:" << std::endl;
 		std::cout << "[1] Povratak na opcije." << std::endl;
 		std::cout << "[2] Izlazak iz programa." << std::endl;
-		std::cin >> option;
+		while (!(std::cin >> option)) {		//Onemogucavanje unosa pogresnog tipa, isti blok se koristi i u daljem kodu
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
 		if (option == 1) control = false;
 		else control = true;
 	} while (!control);
@@ -71,14 +75,30 @@ void Menu::adminOptions(Users &users)
 	std::cout << "|                                                                                     |" << std::endl;
 	std::cout << "|[0] Izlaz iz administratorskih opcija.                                               |" << std::endl;
 	std::cout << " =====================================================================================" << std::endl;
-	std::cin >> options;
+	do {
+		while (!(std::cin >> options)) {
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		if (options != 1 && options != 2 && options != 0)
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+	} while (options != 1 && options != 2 && options != 0);
 	system("CLS");
 	if (options == 1)
 	  adminUserControl(users);//rad sa korisnickim nalozima(poziv druge metode)
 	else if (options == 2)
 	{
 		std::cout << "Unesite novi koeficijent valute u odnosu na konvertibilnu marku (BAM):" << std::endl;
-		std::cin >> InvoiceItem::currencyCoefficient;
+		do {
+			while (!(std::cin >> InvoiceItem::currencyCoefficient)) {
+				std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
+			if (InvoiceItem::currencyCoefficient < 0)
+				std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+		} while (InvoiceItem::currencyCoefficient < 0);
 		FileManager::saveToFolder("Valuta", "valuta.txt", std::to_string(InvoiceItem::currencyCoefficient));
 	}
 	std::cout << std::endl << "Zavrsili ste sa koristenjem administratorovih opcija."<<std::endl;
@@ -97,7 +117,15 @@ void Menu::analystOptions(Invoice *invoices)
 	std::cout << "|                                                                                     |" << std::endl;
 	std::cout << "|[0] Izlaz iz opcija analiticara                                                      |" << std::endl;
 	std::cout << " =====================================================================================" << std::endl;
-	std::cin >> options;
+	do {
+		while (!(std::cin >> options)) {
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		if (options != 1 && options != 2 && options != 3 && options != 0)
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+	} while (options != 1 && options != 2 && options != 3 && options != 0);
 	system("CLS");
 	if (options == 1)
 	{
@@ -146,7 +174,15 @@ void Menu::adminUserControl(Users &users)
 	std::cout << "|                                                                                     |" << std::endl;
 	std::cout << "|[0] Izlaz iz administratorskih opcija.                                               |" << std::endl;
 	std::cout << " =====================================================================================" << std::endl;
-	std::cin >> options;
+	do {
+		while (!(std::cin >> options)) {
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		}
+		if (options != 1 && options != 2 && options != 0)
+			std::cout << "Neispravan unos, pokusajte ponovo." << std::endl;
+	} while (options != 1 && options != 2 && options != 0);
 	system("CLS");
 	if (options == 1)//dodavanje novog korisnika
 	{

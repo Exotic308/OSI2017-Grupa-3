@@ -5,13 +5,7 @@
 class InvoiceParser
 {
 public:
-	
 	string parseFromText(Invoice &, string, string);
-	static const string racun1;
-	static const string racun2;
-	static const string racun3;
-	static const string racun4;
-	static const string racun5;
 private:
 	string detectFormat(string);
 
